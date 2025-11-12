@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- main text -->
+    <style name="BoldText" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">#262626</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">40sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxWidth">340dp</item>
+    </style>
+
+
+    <!-- volume button -->
+    <style name="VolumeOnButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">16dp</item>
+        <item name="backgroundTint">#262626</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">left</item>
+        <item name="paddingStart">20dp</item>
+        <item name="android:paddingVertical">8dp</item>
+    </style>
+
+    <style name="VolumeOffButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">16dp</item>
+        <item name="backgroundTint">#262626</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">right</item>
+        <item name="paddingStart">20dp</item>
+        <item name="android:paddingVertical">8dp</item>
+    </style>
+
+
+    <!-- number button -->
+    <style name="EnabledBtn" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">10dp</item>
+        <item name="backgroundTint">#98CDFF</item>
+        <item name="android:textColor">#3240BB</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">0.8</item>
+    </style>
+
+    <style name="PressedBtn" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">10dp</item>
+        <item name="backgroundTint">#E36034</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">0.8</item>
+    </style>
+
+    <style name="DisabledBtn" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">10dp</item>
+        <item name="backgroundTint">#BEBEBE</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">0.8</item>
+    </style>
+
+
+    <!-- text box -->
+    <style name="TextBoxRed" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:backgroundTint">#E36034</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="TextBoxGray" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:backgroundTint">#BEBEBE</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+    </style>
+
+    <!-- arrow button -->
+    <style name="ArrowBtnLeft">
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+</resources>

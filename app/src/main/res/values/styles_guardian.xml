@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- button -->
+    <style name="BtnP" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="backgroundTint">#FC8A00</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="BtnS" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">#FC8A00</item>
+        <item name="backgroundTint">#FFD5A2</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <style name="BtnD" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="backgroundTint">#D7D7D7</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">16dp</item>
+    </style>
+
+    <!-- scheduleList -->
+    <style name="scheduleList" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:backgroundTint">#E36034</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+
+</resources>
