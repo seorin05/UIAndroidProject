@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/VoulumOnBtn"
+        style="@style/VolumeOnButton"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:text="🔇 음성 중단하기"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/BoldText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:lineSpacingMultiplier="0.8"
+        android:letterSpacing="-0.02"
+        android:text="일정 추가하기\n버튼을 눌러\n일정을 알려주세요"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/TextBoxRed"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="25dp"
+        android:text="듣고 있어요\n ..."
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <LinearLayout
+        android:id="@+id/row1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnSchedule"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginEnd="20dp"
+            android:text="추가\n하기"
+            android:textSize="43dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnTodo"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:textSize="43dp"
+            android:text="나가기" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/row1">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnQna"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:textSize="43dp"
+            android:layout_marginEnd="20dp"
+            android:text="다시\n듣기" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnEmergency"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:text="종료" />
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
