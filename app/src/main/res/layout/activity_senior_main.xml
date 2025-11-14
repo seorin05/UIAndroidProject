@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/senior_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAFAFA"
+    tools:context=".SeniorMain">
+
+    <!-- 음성 버튼 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/VoulumOnBtn"
+        style="@style/VolumeOnButton"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:text="🔇 음성 중단하기"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 안내 -->
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/BoldText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:text="원하는 번호를\n선택해주세요 😊"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 일정 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_schedule"
+        style="@style/EnabledBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="24dp"
+        android:text="일정"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintEnd_toStartOf="@+id/btn_todo"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <!-- 할 일 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_todo"
+        style="@style/EnabledBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="24dp"
+        android:text="할 일"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_schedule"
+        app:layout_constraintTop_toTopOf="@id/btn_schedule" />
+
+    <!-- 문답 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_qa"
+        style="@style/EnabledBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="18dp"
+        android:text="문답"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintEnd_toEndOf="@id/btn_schedule"
+        app:layout_constraintStart_toStartOf="@id/btn_schedule"
+        app:layout_constraintTop_toBottomOf="@id/btn_schedule" />
+
+    <!-- 긴급 통화 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_call"
+        style="@style/EnabledBtn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="18dp"
+        android:text="긴급\n통화"
+        android:textSize="40dp"
+        app:layout_constraintDimensionRatio="1:0.8"
+        app:layout_constraintEnd_toEndOf="@id/btn_todo"
+        app:layout_constraintStart_toStartOf="@id/btn_todo"
+        app:layout_constraintTop_toBottomOf="@id/btn_todo" />
+
+    <!-- 안내 다시 듣기 -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_listen_again"
+        style="@style/EnabledBtn"
+        android:layout_width="396dp"
+        android:layout_height="169dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="24dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:text="안내 다시 듣기"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_qa" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
