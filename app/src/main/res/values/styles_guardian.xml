@@ -39,5 +39,179 @@
         <item name="cornerRadius">20dp</item>
     </style>
 
+    <!-- modal-->
+    <style name="modal" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/rounded_background</item>
+        <item name="android:backgroundTint">#FFFFFF</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <!-- res/values/styles.xml -->
+    <style name="modalMessageText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <!-- 네 버튼 -->
+    <style name="BtnYes" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">25dp</item>
+        <item name="backgroundTint">#FC8A00</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 아니요 버튼 -->
+    <style name="BtnNo" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">25dp</item>
+        <item name="backgroundTint">#FFD5A2</item>
+        <item name="android:textColor">#FC8A00</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 할일 버튼 - 미완료 상태 (주황 테두리) -->
+    <style name="TodoBtnIncomplete" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">25dp</item>
+        <item name="strokeColor">#FF9800</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">#FF9800</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingVertical">16dp</item>
+    </style>
+
+    <!-- 할일 버튼 - 미완료 상태 (주황 테두리) 시간 -->
+    <style name="TodoBtnIncompleteTime" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FF9800</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 할일 버튼 - 미완료 상태 (주황 테두리) 텍스트 -->
+    <style name="TodoBtnIncompleteText" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">#FF9800</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <!-- 할일 버튼 - 완료 상태 (회색 배경) -->
+    <style name="TodoBtnComplete" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="cornerRadius">25dp</item>
+        <item name="backgroundTint">#D3D3D3</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingVertical">16dp</item>
+    </style>
+
+
+    <!-- 할일 버튼 - 완료 상태 시간 -->
+    <style name="TodoBtncompleteTime" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 할일 버튼 - 완료 상태 텍스트 -->
+    <style name="TodoBtncompleteText" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 할일 버튼 - 진행중/삭제 상태 (주황 배경) -->
+    <style name="TodoBtnInProgress" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">25dp</item>
+        <item name="backgroundTint">#FF9800</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingVertical">16dp</item>
+    </style>
+
+    <!-- 할일 버튼 - 진행중/삭제 상태 시간 -->
+    <style name="TodoBtnInProgressTime" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 할일 버튼 - 진행중/삭제 상태 텍스트 -->
+    <style name="TodoBtnInProgressText" parent="TextAppearance.AppCompat">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <!-- 할 일 입력 전체 레이아웃 -->
+    <style name="TodoInputContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- 할 일 제목 텍스트 -->
+    <style name="TodoInputLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">35dp</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">4dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- 할 일 입력 EditText -->
+    <style name="TodoInputField">
+        <item name="android:layout_width">315dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/edittext_bg</item>
+        <item name="android:hint">할 일을 입력해주세요.</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- 할 일 입력 Text -->
+    <style name="TodoInputText">
+        <item name="android:layout_width">315dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:background">@drawable/edittext_bg</item>
+        <item name="android:text">할 일을 입력해주세요.</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 
 </resources>
