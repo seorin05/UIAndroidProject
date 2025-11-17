@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+            android:name=".G_sche_add"
+            android:exported="false" />
+        <activity
+            android:name=".G_sche_main"
+            android:exported="false" />
+        <activity
             android:name=".G_qna_listen"
             android:exported="false" />
         <activity
