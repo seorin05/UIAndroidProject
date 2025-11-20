@@ -68,7 +68,7 @@
 
         <EditText
             style="@style/TodoInputField"
-            android:id="@+id/et_todo_empty"
+            android:id="@+id/et_todo_empty1"
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -101,7 +101,7 @@
 
         <EditText
             style="@style/TodoInputField"
-            android:id="@+id/et_todo_empty"
+            android:id="@+id/et_todo_empty2"
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

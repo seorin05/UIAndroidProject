@@ -15,9 +15,6 @@
             android:name=".G_sche_add"
             android:exported="false" />
         <activity
-            android:name=".G_sche_main"
-            android:exported="false" />
-        <activity
             android:name=".G_qna_listen"
             android:exported="false" />
         <activity
@@ -36,7 +33,7 @@
             android:name=".Qna_tell"
             android:exported="false" />
         <activity
-            android:name=".Qna_main"
+            android:name=".G_sche_main"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
