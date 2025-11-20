@@ -117,11 +117,11 @@
         app:layout_constraintTop_toBottomOf="@id/btn_schedule" />
 
     <Button
-        android:id="@+id/btn_call"
+        android:id="@+id/btn_off"
         style="@style/EnabledBtn"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:text="긴급\n통화"
+        android:text="종료\n하기"
         android:textSize="40dp"
         app:layout_constraintDimensionRatio="1:0.9"
         app:layout_constraintEnd_toEndOf="@id/btn_todo"
