@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- button -->
-    <style name="BtnP" parent="Widget.MaterialComponents.Button">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="backgroundTint">#FC8A00</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:gravity">center</item>
-        <item name="cornerRadius">16dp</item>
-    </style>
+        <!-- button -->
+        <style name="BtnP" parent="Widget.MaterialComponents.Button">
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="backgroundTint">#FC8A00</item>
+            <item name="android:textStyle">normal</item>
+            <item name="android:textSize">20sp</item>
+            <item name="android:gravity">center</item>
+            <item name="cornerRadius">16dp</item>
+        </style>
 
     <style name="BtnS" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">#FC8A00</item>

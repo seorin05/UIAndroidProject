@@ -5,7 +5,19 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.myapplication.Qna_main">
+    tools:context="com.example.myapplication.senior.Qna_main">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/VoulumOnBtn"
+        style="@style/VolumeOnButton"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:text="🔇 음성 중단하기"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/mainText"
