@@ -12,6 +12,7 @@ import com.example.myapplication.R;
 
 public class G_qna_listen extends AppCompatActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

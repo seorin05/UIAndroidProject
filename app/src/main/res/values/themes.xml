@@ -1,15 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
- heejin_guardian
-    <!-- Light Theme -->
-    <style name="Base.Theme.Project" parent="Theme.Material3.Light.NoActionBar">
-        <!-- Customize your light theme here -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+   <!-- Light Theme - Base style with Material3 -->
+   <style name="Base.Theme.Project" parent="Theme.Material3.Light">
+      <!-- Customize your light theme here -->
+      <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+      <!-- <item name="colorSecondary">@color/my_light_secondary</item> -->
+      <!-- <item name="colorTertiary">@color/my_light_tertiary</item> -->
+   </style>
 
-    <!-- Base application theme. -->
-    <!-- Btn style 적용 때문에 Mateial13.Light로 적용 -->
-    <style name="Base.Theme.Project" parent="Theme.Material3.Light">
- main
-    </style>
-    <style name="Theme.Project" parent="Base.Theme.Project" />
+   <!-- Application theme -->
+   <style name="Theme.Project" parent="Base.Theme.Project" />
 
 </resources>
