@@ -87,6 +87,7 @@
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/my"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
@@ -95,6 +96,7 @@
             android:text="내\n답변" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/your"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
@@ -115,6 +117,7 @@
 
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/re"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
@@ -124,6 +127,7 @@
             android:textSize="38sp" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/end"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
