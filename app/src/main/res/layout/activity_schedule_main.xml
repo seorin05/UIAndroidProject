@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/VoulumOnBtn"
+        style="@style/VolumeOnButton"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:text="🔇 음성 중단하기"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/BoldText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="88dp"
+        android:text="[10월 27일 일정]"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        style="@style/TextBoxRed"
+        android:layout_width="0dp"
+        android:textSize="25dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
+        android:text="왔다장보리 재방송\n16:00~18:00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/TextBoxRed"
+        android:layout_width="0dp"
+        android:textSize="25dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="25dp"
+        android:text="미용실 예약\n14:00~15:00"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        style="@style/TextBoxRed"
+        android:id="@+id/textView4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:textSize="25dp"
+        android:layout_marginEnd="25dp"
+        android:text="손녀 결혼식\n17:00~19:00"
+        android:layout_marginTop="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <LinearLayout
+        android:id="@+id/row1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView4">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnSchedule"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_marginEnd="20dp"
+            android:textSize="43dp"
+            android:text="일정 추가" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnTodo"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:text="할 일" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:baselineAligned="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/row1">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnQna"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:textSize="43dp"
+            android:layout_marginEnd="20dp"
+            android:text="다시\n듣기" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/BtnEmergency"
+            style="@style/EnabledBtn"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:text="종료" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/left_arrow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="왼쪽 화살표"
+        android:scaleType="fitCenter"
+        android:src="@drawable/arrowbtnleft"
+        android:translationX="-20dp"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="1.0"
+        />
+
+    <ImageButton
+        android:id="@+id/right_arrow"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="오른쪽 화살표"
+        android:scaleType="fitCenter"
+        android:scaleX="-1"
+        android:src="@drawable/arrowbtnleft"
+        android:translationX="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintTop_toTopOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="1.0"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

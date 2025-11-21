@@ -1,11 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+ heejin_guardian
     <!-- Light Theme -->
     <style name="Base.Theme.Project" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your light theme here -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <!-- <item name="colorOnPrimary">@color/white</item> -->
-        <!-- <item name="android:statusBarColor">@color/my_light_primary</item> -->
-    </style>
 
+    <!-- Base application theme. -->
+    <!-- Btn style 적용 때문에 Mateial13.Light로 적용 -->
+    <style name="Base.Theme.Project" parent="Theme.Material3.Light">
+ main
+    </style>
     <style name="Theme.Project" parent="Base.Theme.Project" />
+
 </resources>

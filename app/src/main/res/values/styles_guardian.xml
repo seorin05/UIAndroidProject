@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- button -->
-    <style name="BtnP" parent="Widget.MaterialComponents.Button">
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="backgroundTint">#FC8A00</item>
-        <item name="android:textStyle">normal</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:gravity">center</item>
-        <item name="cornerRadius">16dp</item>
-    </style>
+        <!-- button -->
+        <style name="BtnP" parent="Widget.MaterialComponents.Button">
+            <item name="android:textColor">#FFFFFF</item>
+            <item name="backgroundTint">#FC8A00</item>
+            <item name="android:textStyle">normal</item>
+            <item name="android:textSize">20sp</item>
+            <item name="android:gravity">center</item>
+            <item name="cornerRadius">16dp</item>
+        </style>
 
     <style name="BtnS" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">#FC8A00</item>
@@ -211,6 +211,18 @@
         <item name="android:text">할 일을 입력해주세요.</item>
         <item name="android:padding">12dp</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <!-- 문답 text box -->
+    <style name="TextBoxWhite" parent="Widget.AppCompat.TextView">
+        <item name="android:background">@drawable/rounded_background_white_stroke</item>
+        <item name="android:textColor">#252525</item>
+        <item name="strokeColor">#252525</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
     </style>
 
 
