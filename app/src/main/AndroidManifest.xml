@@ -12,6 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
+heejin_senior
             android:name=".Qna_listen2"
             android:exported="false" />
         <activity
@@ -23,12 +24,37 @@
         <activity
             android:name=".Qna_main"
             android:exported="true">
+
+            android:name=".MainActivity"
+            android:exported="false">
+main
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Sample"
+            android:exported="false" />
+        <activity
+            android:name=".signup.SignUpMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".login.LoginMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".guardian.AddScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".guardian.ScheduleMainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".senior.AddScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".senior.ScheduleMainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
