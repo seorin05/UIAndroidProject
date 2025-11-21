@@ -13,16 +13,16 @@
         android:theme="@style/Theme.Project">
         <activity
  heejin_guardian
-            android:name=".G_sche_add"
+            android:name=".guardian.G_sche_add"
             android:exported="false" />
         <activity
-            android:name=".G_qna_listen"
+            android:name=".guardian.G_qna_listen"
             android:exported="false" />
         <activity
-            android:name=".G_qna_answer"
+            android:name=".guardian.G_qna_answer"
             android:exported="false" />
         <activity
-            android:name=".G_qna_main"
+            android:name=".guardian.G_qna_main"
             android:exported="false" />
         <activity
             android:name=".Qna_listen2"
@@ -34,7 +34,7 @@
             android:name=".Qna_tell"
             android:exported="false" />
         <activity
-            android:name=".G_sche_main"
+            android:name=".guardian.G_sche_main"
 
             android:name=".MainActivity"
  main
