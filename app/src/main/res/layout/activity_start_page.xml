@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".start.StartPageActivity">
+
+    <Button
+        style="@style/BtnYes"
+        android:id="@+id/log_in"
+        android:text="로그인 하기"
+        android:letterSpacing="0.01"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="500dp"
+        android:background="@drawable/todo_btn_inprogress_bg"
+        android:minHeight="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        style="@style/BtnNo"
+        android:id="@+id/sign_up"
+        android:text="회원가입 하기"
+        android:letterSpacing="0.01"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/todo_btn_inprogress_bg"
+        android:minHeight="70dp"
+        app:layout_constraintStart_toStartOf="@id/log_in"
+        app:layout_constraintTop_toBottomOf="@id/log_in" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
