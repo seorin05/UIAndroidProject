@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
-            android:name=".MainActivity"
+            android:name=".guardian.GuardianTodoAdd"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +38,7 @@
             android:name=".guardian.G_sche_main"
             android:exported="false" />
         <activity
-            android:name=".guardian.GuardianTodoAdd"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".guardian.GuardianTodoDelete"
