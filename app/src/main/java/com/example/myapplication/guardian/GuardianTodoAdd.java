@@ -145,26 +145,32 @@ public class GuardianTodoAdd extends AppCompatActivity {
         String content = etTodoContent.getText().toString().trim();
         String time = tvTimeSelect.getText().toString();
 
-        // 1. 저장할 데이터 객체 생성
-        TodoItem todoItem = new TodoItem(content, time);
+        // ★중요★: 현재 사용자의 연결 코드 (나중에는 로그인 정보에서 가져와야 함)
+        // 지금은 테스트를 위해 "1234"라고 가정
+        String currentGroupCode = "1234";
 
-        // 2. 파이어베이스에 고유 키(push)를 만들어서 저장
-        String key = mDatabase.push().getKey();
+        // 1. 저장할 데이터 객체 생성 (그룹 코드 포함)
+        TodoItem todoItem = new TodoItem(content, time, currentGroupCode);
+
+        // 2. 파이어베이스 저장 경로 수정
+        // 기존: Todos -> (무작위키) -> 데이터
+        // 수정: Todos -> 1234(그룹코드) -> (무작위키) -> 데이터
+        // 이렇게 하면 '1234' 그룹의 데이터만 따로 모여서 관리가 훨씬 쉽습니다!
+
+        String key = mDatabase.child(currentGroupCode).push().getKey(); // 그룹 코드 아래에 키 생성
+
         if (key != null) {
-            mDatabase.child(key).setValue(todoItem)
+            // child(currentGroupCode)를 추가하여 그룹별로 폴더를 나눕니다.
+            mDatabase.child(currentGroupCode).child(key).setValue(todoItem)
                     .addOnSuccessListener(aVoid -> {
-                        // 성공 시
                         Toast.makeText(GuardianTodoAdd.this, "할 일이 추가되었습니다!", Toast.LENGTH_SHORT).show();
 
-                        // 메인 화면으로 이동
                         Intent intent = new Intent(getApplicationContext(), GuardianTodoMain.class);
-                        // 뒤로가기 눌렀을 때 다시 추가화면으로 오지 않게 하려면 아래 플래그 추가
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-                        finish(); // 현재 액티비티 종료
+                        finish();
                     })
                     .addOnFailureListener(e -> {
-                        // 실패 시
                         Toast.makeText(GuardianTodoAdd.this, "저장 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
         }
