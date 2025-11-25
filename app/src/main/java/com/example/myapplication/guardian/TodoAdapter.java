@@ -37,8 +37,6 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         // 뷰에 데이터 표시
         holder.tvTime.setText(item.time);
         holder.tvContent.setText(item.content);
-
-        // (나중에 완료 여부에 따라 아이콘이나 배경을 바꾸는 코드가 여기에 들어갈 수 있습니다)
     }
 
     @Override

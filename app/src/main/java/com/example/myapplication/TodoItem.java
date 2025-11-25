@@ -5,6 +5,7 @@ public class TodoItem {
     public String time;    // 시간
     public boolean isCompleted; // 완료 여부
     public String groupCode; // 연결된 4자리 숫자 (그룹 ID)
+    public String key;
 
     // 파이어베이스는 빈 생성자가 필수
     public TodoItem() { }

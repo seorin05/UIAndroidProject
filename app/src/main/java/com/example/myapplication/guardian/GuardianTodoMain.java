@@ -36,7 +36,7 @@ public class GuardianTodoMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_todo_main);
 
-        // 1. 버튼 설정 (기존 코드 유지)
+        // 1. 버튼 설정
         Button addButton = findViewById(R.id.btn_add_todo);
         Button deleteButton = findViewById(R.id.btn_delete_todo);
 
@@ -80,8 +80,7 @@ public class GuardianTodoMain extends AppCompatActivity {
                     }
                 }
 
-                // ★★★ 여기서 정렬 시작! ★★★
-                // 리스트를 시간 순서대로 정렬합니다.
+                // 리스트를 시간 순서대로 정렬
                 Collections.sort(todoList, new Comparator<TodoItem>() {
                     @Override
                     public int compare(TodoItem o1, TodoItem o2) {
@@ -103,7 +102,7 @@ public class GuardianTodoMain extends AppCompatActivity {
         });
     }
 
-    // ★★★ 시간 문자열을 비교 가능한 숫자(분)로 바꾸는 헬퍼 함수 ★★★
+    // 시간 문자열을 비교 가능한 숫자(분)로 바꾸는 헬퍼 함수
     // 예: "오전 01:30" -> 90분, "오후 01:30" -> 810분
     private int convertToMinutes(String timeStr) {
         try {
