@@ -28,7 +28,6 @@ import java.util.Comparator;
 import java.util.List;
 
 public class GuardianTodoMain extends AppCompatActivity {
-
     private RecyclerView recyclerView;
     private TodoAdapter adapter;
     private List<TodoItem> todoList;
@@ -39,15 +38,16 @@ public class GuardianTodoMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_todo_main);
 
-        // 1. 버튼 설정
+        // 버튼
         Button addButton = findViewById(R.id.btn_add_todo);
         Button deleteButton = findViewById(R.id.btn_delete_todo);
-        ImageView alarm=findViewById(R.id.received_alarm); // 얘 안 씀
+//        ImageView alarm=findViewById(R.id.received_alarm); 알람 버튼 추가
         LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
         LinearLayout gotoQna = findViewById(R.id.nav_notification);
         LinearLayout gotoTodo = findViewById(R.id.nav_todo);
+        // 각 리사이클러 뷰에 대해서 알람 전송 버튼 추가
 
-
+        // 클릭 리스너 설정
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +91,7 @@ public class GuardianTodoMain extends AppCompatActivity {
             }
         });
 
-        // 2. 리사이클러뷰 초기화
+        // 리사이클러뷰 초기화
         recyclerView = findViewById(R.id.rv_todo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this)); // 세로로 나열
 
@@ -99,7 +99,7 @@ public class GuardianTodoMain extends AppCompatActivity {
         adapter = new TodoAdapter(todoList);
         recyclerView.setAdapter(adapter);
 
-        // 3. 파이어베이스 데이터 가져오기 (그룹 코드 "1234")
+        // 파이어베이스 데이터 가져오기 (일단 그룹 코드 "1234"로 설정함)
         String groupCode = "1234";
         mDatabase = FirebaseDatabase.getInstance().getReference("Todos").child(groupCode);
 

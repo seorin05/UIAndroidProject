@@ -17,17 +17,18 @@ public class SeniorMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_senior_main);
 
-        // 버튼 찾기
+        // 버튼
         Button todoButton = findViewById(R.id.btn_todo);
         Button scheButton = findViewById(R.id.btn_schedule);
         Button qnaButton = findViewById(R.id.btn_qa);
         Button callButton = findViewById(R.id.btn_call);
+        // 음성 중단하기 버튼 추가
+        // 안내 다시듣기 버튼 추가
 
         // 클릭 리스너 설정
         todoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // SubActivity.class 대신 SeniorMain.class로 변경
                 Intent intent = new Intent(getApplicationContext(), SeniorTodo.class);
                 startActivity(intent);
             }
@@ -35,7 +36,6 @@ public class SeniorMain extends AppCompatActivity {
         scheButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // SubActivity.class 대신 SeniorMain.class로 변경
                 Intent intent = new Intent(getApplicationContext(), ScheduleMainActivity.class);
                 startActivity(intent);
             }
@@ -43,7 +43,6 @@ public class SeniorMain extends AppCompatActivity {
         qnaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // SubActivity.class 대신 SeniorMain.class로 변경
                 Intent intent = new Intent(getApplicationContext(), Qna_main.class);
                 startActivity(intent);
             }

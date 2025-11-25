@@ -48,10 +48,11 @@ public class GuardianTodoDelete extends AppCompatActivity {
         btnDelete = findViewById(R.id.btn_delete_todo);
         recyclerView = findViewById(R.id.rv_todo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        ImageView alarm=findViewById(R.id.received_alarm); // 얘 안 씀
+//        ImageView alarm=findViewById(R.id.received_alarm); // 알람 화면으로 가는 버튼 추가
         LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
         LinearLayout gotoQna = findViewById(R.id.nav_notification);
         LinearLayout gotoTodo = findViewById(R.id.nav_todo);
+        ImageView sendalarm=findViewById(R.id.iv_todo_icon);
 
         todoList = new ArrayList<>();
 
@@ -111,7 +112,7 @@ public class GuardianTodoDelete extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TodoItem todoItem = dataSnapshot.getValue(TodoItem.class);
                     if (todoItem != null) {
-                        todoItem.key = dataSnapshot.getKey(); // 키 저장 필수!
+                        todoItem.key = dataSnapshot.getKey(); // 키 저장
                         todoList.add(todoItem);
                     }
                 }
