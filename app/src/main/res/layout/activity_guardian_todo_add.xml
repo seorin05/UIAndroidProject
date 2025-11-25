@@ -20,6 +20,7 @@
             android:background="#FFD5A2" />
 
         <ImageView
+            android:id="@+id/received_alarm"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
@@ -63,6 +64,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
+                    android:id="@+id/goto_calendar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 

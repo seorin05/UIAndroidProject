@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -37,6 +39,34 @@ public class GuardianTodoAdd extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_todo_add);
+
+        // 버튼 설정
+        ImageView alarm=findViewById(R.id.received_alarm); // 얘 안 씀
+        LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
+        LinearLayout gotoQna = findViewById(R.id.nav_notification);
+        LinearLayout gotoTodo = findViewById(R.id.nav_todo);
+
+        gotoCalendar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
+                startActivity(intent);
+            }
+        });
+        gotoQna.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),G_qna_main.class);
+                startActivity(intent);
+            }
+        });
+        gotoTodo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),GuardianTodoMain.class);
+                startActivity(intent);
+            }
+        });
 
         // 1. 뷰 찾기
         etTodoContent = findViewById(R.id.et_todo_content);
@@ -93,7 +123,7 @@ public class GuardianTodoAdd extends AppCompatActivity {
         Button btnDismiss = dialog.findViewById(R.id.btnDismiss);
         Button btnConfirm = dialog.findViewById(R.id.btnConfirm);
 
-        // 취소 버튼
+        // 버튼설정
         btnDismiss.setOnClickListener(v -> dialog.dismiss());
 
         // 선택(확인) 버튼
@@ -116,6 +146,15 @@ public class GuardianTodoAdd extends AppCompatActivity {
         });
 
         dialog.show();
+
+        //        alarm.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
+//                startActivity(intent);
+//            }
+//        });
+
     }
 
     // 입력값 확인해서 버튼 활성화/비활성화 및 색상 변경

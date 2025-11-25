@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +42,11 @@ public class GuardianTodoMain extends AppCompatActivity {
         // 1. 버튼 설정
         Button addButton = findViewById(R.id.btn_add_todo);
         Button deleteButton = findViewById(R.id.btn_delete_todo);
+        ImageView alarm=findViewById(R.id.received_alarm); // 얘 안 씀
+        LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
+        LinearLayout gotoQna = findViewById(R.id.nav_notification);
+        LinearLayout gotoTodo = findViewById(R.id.nav_todo);
+
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +59,34 @@ public class GuardianTodoMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), GuardianTodoDelete.class);
+                startActivity(intent);
+            }
+        });
+//        alarm.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
+//                startActivity(intent);
+//            }
+//        });
+        gotoCalendar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
+                startActivity(intent);
+            }
+        });
+        gotoQna.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),G_qna_main.class);
+                startActivity(intent);
+            }
+        });
+        gotoTodo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),GuardianTodoMain.class);
                 startActivity(intent);
             }
         });

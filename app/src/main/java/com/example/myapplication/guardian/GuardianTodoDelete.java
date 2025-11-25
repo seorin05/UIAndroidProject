@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,11 +44,45 @@ public class GuardianTodoDelete extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_todo_delete);
 
+        // 버튼 설정
         btnDelete = findViewById(R.id.btn_delete_todo);
         recyclerView = findViewById(R.id.rv_todo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ImageView alarm=findViewById(R.id.received_alarm); // 얘 안 씀
+        LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
+        LinearLayout gotoQna = findViewById(R.id.nav_notification);
+        LinearLayout gotoTodo = findViewById(R.id.nav_todo);
 
         todoList = new ArrayList<>();
+
+        //        alarm.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
+//                startActivity(intent);
+//            }
+//        });
+        gotoCalendar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
+                startActivity(intent);
+            }
+        });
+        gotoQna.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),G_qna_main.class);
+                startActivity(intent);
+            }
+        });
+        gotoTodo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(getApplicationContext(),GuardianTodoMain.class);
+                startActivity(intent);
+            }
+        });
 
         // 어댑터 초기화 및 리스너 설정 (선택 개수 변경 시 호출됨)
         adapter = new TodoDeleteAdapter(todoList, count -> {
