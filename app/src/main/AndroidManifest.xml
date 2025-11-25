@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
-            android:name=".guardian.GuardianTodoAdd"
+            android:name=".senior.SeniorMain"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,7 +38,7 @@
             android:name=".guardian.G_sche_main"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".guardian.GuardianTodoAdd"
             android:exported="false" />
         <activity
             android:name=".guardian.GuardianTodoDelete"
@@ -65,7 +65,7 @@
             android:name=".senior.ScheduleMainActivity"
             android:exported="false" />
         <activity
-            android:name=".senior.SeniorMain"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".senior.SeniorTodo"
