@@ -226,4 +226,17 @@
     </style>
 
 
+    <!-- 알림 리스트 -->
+    <style name="AlertListToday" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">#262626</item>
+        <item name="backgroundTint">#FFD5A2</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="AlertListYesterday" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">#262626</item>
+        <item name="backgroundTint">#D7D7D7</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
 </resources>
