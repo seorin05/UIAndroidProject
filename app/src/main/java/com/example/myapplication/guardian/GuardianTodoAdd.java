@@ -169,27 +169,31 @@ public class GuardianTodoAdd extends AppCompatActivity {
         }
     }
 
+
     // 파이어베이스 저장 로직
     private void saveToFirebase() {
         String content = etTodoContent.getText().toString().trim();
         String time = tvTimeSelect.getText().toString();
+        String groupCode = "1234"; // 나중엔 로그인 정보로 교체
 
-        // ★중요★ 현재 사용자의 연결 코드 (나중에는 로그인 정보에서 가져와야 함)
-        // 지금은 테스트를 위해 "1234"라고 가정
-        String currentGroupCode = "1234";
+        // 1. 시간을 비교 가능한 숫자(분)로 변환 (예: 오후 12:00 -> 720)
+        int minutes = convertToMinutes(time);
 
-        // 저장할 데이터 객체 생성 (그룹 코드 포함)
-        TodoItem todoItem = new TodoItem(content, time, currentGroupCode);
+        // 2. 정렬을 위한 '키(ID)' 생성
+        String randomKey = mDatabase.child(groupCode).push().getKey();
 
-        // 파이어베이스 저장 경로 수정
-        // 기존: Todos -> (무작위키) -> 데이터
-        // 수정: Todos -> 1234(그룹코드) -> (무작위키) -> 데이터
+        // [시간(5자리 숫자)]_[랜덤키] 형식으로 만듭니다.
+        // %05d: 숫자를 5자리로 맞춤 (예: 720 -> "00720"). 그래야 문자열 정렬이 잘 됩니다.
+        String sortableKey = String.format("%05d_%s", minutes, randomKey);
 
-        String key = mDatabase.child(currentGroupCode).push().getKey(); // 그룹 코드 아래에 키 생성
+        // 3. 데이터 생성 및 저장
+        // 주의: TodoItem 객체 안에는 key를 넣을 필요가 없습니다(읽을 때 넣으면 됨).
+        // 저장할 때는 '값'만 중요하니까요.
+        TodoItem todoItem = new TodoItem(content, time, groupCode);
 
-        if (key != null) {
-            // child(currentGroupCode)를 추가하여 그룹별로 폴더를 나눔
-            mDatabase.child(currentGroupCode).child(key).setValue(todoItem)
+        if (randomKey != null) {
+            // 만든 '정렬 키'를 경로로 사용하여 저장
+            mDatabase.child(groupCode).child(sortableKey).setValue(todoItem)
                     .addOnSuccessListener(aVoid -> {
                         Toast.makeText(GuardianTodoAdd.this, "할 일이 추가되었습니다!", Toast.LENGTH_SHORT).show();
 
@@ -201,6 +205,20 @@ public class GuardianTodoAdd extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         Toast.makeText(GuardianTodoAdd.this, "저장 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
+        }
+    }
+    private int convertToMinutes(String timeStr) {
+        try {
+            String[] parts = timeStr.split(" ");
+            String amPm = parts[0];
+            String[] timeParts = parts[1].split(":");
+            int hour = Integer.parseInt(timeParts[0]);
+            int minute = Integer.parseInt(timeParts[1]);
+            if (amPm.equals("오후") && hour != 12) hour += 12;
+            if (amPm.equals("오전") && hour == 12) hour = 0;
+            return (hour * 60) + minute;
+        } catch (Exception e) {
+            return 99999; // 에러 시 맨 뒤로
         }
     }
 }

@@ -52,7 +52,6 @@ public class GuardianTodoDelete extends AppCompatActivity {
         LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
         LinearLayout gotoQna = findViewById(R.id.nav_notification);
         LinearLayout gotoTodo = findViewById(R.id.nav_todo);
-        ImageView sendalarm=findViewById(R.id.iv_todo_icon);
 
         todoList = new ArrayList<>();
 
@@ -116,14 +115,6 @@ public class GuardianTodoDelete extends AppCompatActivity {
                         todoList.add(todoItem);
                     }
                 }
-                java.util.Collections.sort(todoList, new java.util.Comparator<TodoItem>() {
-                    @Override
-                    public int compare(TodoItem o1, TodoItem o2) {
-                        int time1 = convertToMinutes(o1.time);
-                        int time2 = convertToMinutes(o2.time);
-                        return Integer.compare(time1, time2);
-                    }
-                });
                 adapter.notifyDataSetChanged();
             }
             @Override
@@ -187,23 +178,5 @@ public class GuardianTodoDelete extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-    }
-    // 시간 변환 함수
-    private int convertToMinutes(String timeStr) {
-        try {
-            String[] parts = timeStr.split(" ");
-            String amPm = parts[0];
-            String[] timeParts = parts[1].split(":");
-
-            int hour = Integer.parseInt(timeParts[0]);
-            int minute = Integer.parseInt(timeParts[1]);
-
-            if (amPm.equals("오후") && hour != 12) hour += 12;
-            if (amPm.equals("오전") && hour == 12) hour = 0;
-
-            return (hour * 60) + minute;
-        } catch (Exception e) {
-            return 99999;
-        }
     }
 }
