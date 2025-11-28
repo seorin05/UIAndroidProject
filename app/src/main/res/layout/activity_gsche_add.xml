@@ -40,7 +40,7 @@
 
         style="@style/BoldText"
         android:text="추가할 일정을 알려주세요!"
-        android:textSize="26dp" />
+        android:textSize="26sp" />
 
     <!--text field-->
     <LinearLayout
@@ -68,7 +68,7 @@
 
         <EditText
             style="@style/TodoInputField"
-            android:id="@+id/et_todo_empty1"
+            android:id="@+id/edit_title"
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -101,16 +101,17 @@
 
         <EditText
             style="@style/TodoInputField"
-            android:id="@+id/et_todo_empty2"
+            android:id="@+id/date_dialog"
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:hint="날짜를 선택해주세요."
             android:padding="12dp"
             android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/todoTime"
+        android:id="@+id/time_dialog"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -136,6 +137,7 @@
             style="@style/TodoInputField"
             android:id="@+id/et_todo_empty"
             android:layout_width="315dp"
+            android:hint="시간을 선택해주세요."
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="12dp"
@@ -143,6 +145,7 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnSave"
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:layout_marginTop="40dp"
@@ -150,9 +153,9 @@
         style="@style/BtnD"
         android:text="일정 추가하기"
 
-        app:layout_constraintTop_toBottomOf="@id/todoTime"
-        app:layout_constraintStart_toStartOf="@id/todoTime"
-        app:layout_constraintEnd_toEndOf="@id/todoTime" />
+        app:layout_constraintTop_toBottomOf="@id/time_dialog"
+        app:layout_constraintStart_toStartOf="@id/time_dialog"
+        app:layout_constraintEnd_toEndOf="@id/time_dialog" />
 
     <!-- 푸터 일정 선택-->
     <FrameLayout
