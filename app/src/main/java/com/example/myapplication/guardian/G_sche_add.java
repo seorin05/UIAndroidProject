@@ -3,12 +3,14 @@ package com.example.myapplication.guardian;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -37,6 +39,19 @@ public class G_sche_add extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_gsche_add);
+
+        ImageView moveToTodo = findViewById(R.id.nav_todo_icon);
+        moveToTodo.setOnClickListener(v -> {
+            Intent intent = new Intent(G_sche_add.this, GuardianTodoMain.class);
+            startActivity(intent);
+        });
+
+        ImageView moveToQnA = findViewById(R.id.nav_notification_icon);
+        moveToQnA.setOnClickListener(v -> {
+            Intent intent = new Intent(G_sche_add.this, G_qna_main.class);
+            startActivity(intent);
+        });
+
 
         databaseReference = FirebaseDatabase.getInstance().getReference("schedules");
 

@@ -89,20 +89,20 @@
         app:layout_constraintTop_toBottomOf="@id/scheduleScroll">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/BtnSchedule"
+            android:id="@+id/btnSchedule"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginEnd="20dp"
-            android:textSize="43dp"
+            android:textSize="43sp"
             android:text="일정 추가" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/BtnTodo"
+            android:id="@+id/btnConfirm"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:text="할 일" />
+            android:text="확인" />
     </LinearLayout>
 
     <LinearLayout
@@ -117,16 +117,16 @@
         app:layout_constraintTop_toBottomOf="@+id/row1">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/BtnQna"
+            android:id="@+id/btnRetry"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"
-            android:textSize="43dp"
+            android:textSize="43sp"
             android:layout_marginEnd="20dp"
             android:text="다시\n듣기" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/BtnEmergency"
+            android:id="@+id/btnExit"
             style="@style/EnabledBtn"
             android:layout_width="160dp"
             android:layout_height="160dp"

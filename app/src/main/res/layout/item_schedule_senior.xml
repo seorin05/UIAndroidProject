@@ -35,13 +35,4 @@
             android:textSize="14sp" />
     </LinearLayout>
 
-    <!-- 삭제 버튼 -->
-    <ImageView
-        android:id="@+id/btnDeleteSchedule"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical"
-        android:src="@android:drawable/ic_menu_delete"
-        android:contentDescription="삭제"
-        app:tint="@android:color/holo_orange_dark" />
 </LinearLayout>

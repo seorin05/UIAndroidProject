@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,8 +61,21 @@ public class G_sche_main extends AppCompatActivity {
         Button btnAddSchedule = findViewById(R.id.btnAddSchedule);
         btnAddSchedule.setOnClickListener(v -> {
             Intent intent = new Intent(G_sche_main.this, G_sche_add.class);
-            startActivityForResult(intent, 100);
+            startActivity(intent);
         });
+
+        ImageView moveToTodo = findViewById(R.id.nav_todo_icon);
+        moveToTodo.setOnClickListener(v -> {
+            Intent intent = new Intent(G_sche_main.this, GuardianTodoMain.class);
+            startActivity(intent);
+        });
+
+        ImageView moveToQnA = findViewById(R.id.nav_notification_icon);
+        moveToQnA.setOnClickListener(v -> {
+            Intent intent = new Intent(G_sche_main.this, G_qna_main.class);
+            startActivity(intent);
+        });
+
 
         // 현재 월 저장
         Calendar calendar = Calendar.getInstance();
@@ -75,10 +89,50 @@ public class G_sche_main extends AppCompatActivity {
 
         // 캘린더 날짜 선택 이벤트
         calendarView.setOnDateChangeListener((view, selectedYear, selectedMonth, selectedDay) -> {
+            // 선택된 날짜 업데이트
             selectedDate = selectedYear + "년 " + (selectedMonth + 1) + "월 " + selectedDay + "일";
+
+            // 현재 년/월 업데이트
+            currentYear = selectedYear;
+            currentMonth = selectedMonth + 1;
+
+            // 날짜 텍스트 업데이트
             tvScheduleDate.setText((selectedMonth + 1) + "/" + selectedDay + " 일정");
+
+            // 일정 로드
             loadSchedulesFromFirebase();
         });
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            private int lastMonth = currentMonth;
+
+            @Override
+            public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+                // 월이 변경되었는지 확인
+                if (lastMonth != month + 1) {
+                    // 🔥 달이 변경됨 → 선택된 날짜 초기화하고 월 전체 일정 표시
+                    selectedDate = null;
+                    currentYear = year;
+                    currentMonth = month + 1;
+                    lastMonth = month + 1;
+
+                    // 월 전체 일정 텍스트 갱신
+                    tvScheduleDate.setText(currentMonth + "월 일정");
+
+                    // 일정 로드
+                    loadSchedulesFromFirebase();
+                } else {
+                    // 같은 월 내에서 날짜만 선택
+                    selectedDate = year + "년 " + (month + 1) + "월 " + dayOfMonth + "일";
+                    currentYear = year;
+                    currentMonth = month + 1;
+
+                    tvScheduleDate.setText((month + 1) + "/" + dayOfMonth + " 일정");
+                    loadSchedulesFromFirebase();
+                }
+            }
+        });
+
 
         // Firebase에서 일정 불러오기
         loadSchedulesFromFirebase();
@@ -102,7 +156,7 @@ public class G_sche_main extends AppCompatActivity {
     }
 
     private void loadSchedulesFromFirebase() {
-        Log.d(TAG, "Loading schedules for date: " + selectedDate);
+        Log.d(TAG, "Loading schedules - Year: " + currentYear + ", Month: " + currentMonth + ", SelectedDate: " + selectedDate);
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -127,16 +181,19 @@ public class G_sche_main extends AppCompatActivity {
 
                     if (date != null && isSameFamily) {
                         if (selectedDate == null) {
-                            // 🔥 날짜 선택 안 한 경우 → 현재 월 일정만 표시
-                            if (date.startsWith(currentYear + "년 " + currentMonth + "월")) {
+                            // 날짜 선택 안 한 경우 → 현재 월 일정만 표시
+                            String prefix = currentYear + "년 " + String.format("%d", currentMonth) + "월";
+                            if (date.startsWith(prefix)) {
                                 addScheduleItem(scheduleId, title, date, time);
                                 hasSchedule = true;
+                                Log.d(TAG, "Added schedule: " + title + " for " + date);
                             }
                         } else {
-                            // 🔥 날짜 선택한 경우 → 해당 날짜 일정만 표시
+                            // 날짜 선택한 경우 → 해당 날짜 일정만 표시
                             if (date.equals(selectedDate)) {
                                 addScheduleItem(scheduleId, title, date, time);
                                 hasSchedule = true;
+                                Log.d(TAG, "Added schedule: " + title + " for selected date");
                             }
                         }
                     }
@@ -163,17 +220,25 @@ public class G_sche_main extends AppCompatActivity {
 
         TextView tvTitle = scheduleItem.findViewById(R.id.tvScheduleTitle);
         TextView tvDateTime = scheduleItem.findViewById(R.id.tvScheduleDateTime);
+        ImageView btnDelete = scheduleItem.findViewById(R.id.btnDeleteSchedule);
 
         tvTitle.setText(title);
         tvDateTime.setText(date + " " + time);
 
+        // 삭제 버튼 클릭 이벤트
+        btnDelete.setOnClickListener(v -> {
+            deleteSchedule(scheduleId);
+        });
+
         scheduleContainer.addView(scheduleItem);
     }
+
 
     private void deleteSchedule(String scheduleId) {
         databaseReference.child(scheduleId).removeValue()
                 .addOnSuccessListener(aVoid -> {
                     Toast.makeText(this, "일정이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                    loadSchedulesFromFirebase(); // 삭제 후 새로고침
                 })
                 .addOnFailureListener(e -> {
                     Toast.makeText(this, "삭제 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -200,11 +265,13 @@ public class G_sche_main extends AppCompatActivity {
         });
 
         navTodo.setOnClickListener(v -> {
-            Toast.makeText(this, "할일 페이지로 이동", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(G_sche_main.this, GuardianTodoMain.class);
+            startActivity(intent);
         });
 
         navNotification.setOnClickListener(v -> {
-            Toast.makeText(this, "알림 페이지로 이동", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(G_sche_main.this, G_qna_main.class);
+            startActivity(intent);
         });
     }
 }
