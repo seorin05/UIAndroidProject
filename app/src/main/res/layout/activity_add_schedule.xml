@@ -64,7 +64,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnSchedule"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginEnd="20dp"
@@ -73,7 +73,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnTodo"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:textSize="43dp"
@@ -95,7 +95,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnQna"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:textSize="43dp"
@@ -104,7 +104,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/BtnEmergency"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:text="종료" />

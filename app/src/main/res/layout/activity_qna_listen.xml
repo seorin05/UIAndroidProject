@@ -88,7 +88,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/my"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
@@ -97,7 +97,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/your"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
@@ -118,7 +118,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/re"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
@@ -128,7 +128,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/end"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginStart="20dp"

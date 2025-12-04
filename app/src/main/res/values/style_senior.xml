@@ -34,7 +34,7 @@
     </style>
 
 
-    <!-- number button -->
+    <!-- number button
     <style name="EnabledBtn" parent="Widget.MaterialComponents.Button">
         <item name="cornerRadius">10dp</item>
         <item name="backgroundTint">#98CDFF</item>
@@ -57,6 +57,19 @@
         <item name="cornerRadius">10dp</item>
         <item name="backgroundTint">#BEBEBE</item>
         <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textSize">50sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:lineSpacingMultiplier">0.8</item>
+    </style>
+    -->
+
+    <style name="QnaStateButton" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">10dp</item>
+
+        <item name="backgroundTint">@color/button_background_tint</item>
+
+        <item name="android:textColor">@color/button_text_selector</item>
+
         <item name="android:textSize">50sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:lineSpacingMultiplier">0.8</item>

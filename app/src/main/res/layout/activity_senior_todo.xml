@@ -76,7 +76,7 @@
 
     <Button
         android:id="@+id/btn_schedule"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="18dp"
@@ -91,7 +91,7 @@
 
     <Button
         android:id="@+id/btn_todo"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
@@ -105,7 +105,7 @@
 
     <Button
         android:id="@+id/btn_qa"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
@@ -118,7 +118,7 @@
 
     <Button
         android:id="@+id/btn_off"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="종료\n하기"
