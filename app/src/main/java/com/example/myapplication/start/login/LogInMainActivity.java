@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import android.content.Intent;
+
 public class LogInMainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
@@ -107,10 +109,16 @@ public class LogInMainActivity extends AppCompatActivity {
                                             if (role.equals("어르신")) {
                                                 // 어르신은 연결번호 확인 없이 로그인
                                                 Toast.makeText(this, "로그인 성공! 역할: 어르신", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(LogInMainActivity.this, com.example.myapplication.senior.Qna_main.class);
+                                                startActivity(intent);
+                                                finish(); // 로그인 페이지 종료
                                             } else if (role.equals("보호자")) {
                                                 // 보호자는 연결번호 확인 필요
                                                 if (savedCode != null && savedCode.equals(connectionCode)) {
                                                     Toast.makeText(this, "로그인 성공! 역할: 보호자", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(LogInMainActivity.this, com.example.myapplication.guardian.G_qna_main.class);
+                                                    startActivity(intent);
+                                                    finish();
                                                 } else {
                                                     Toast.makeText(this, "연결번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show();
                                                     auth.signOut();

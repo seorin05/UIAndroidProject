@@ -49,6 +49,12 @@ public class Qna_main extends AppCompatActivity {
 
         binding.tell.setOnClickListener(v -> {
             Intent intent = new Intent(Qna_main.this, Qna_tell.class);
+
+            // 현재 표시 중인 날짜 전달
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            String dateStr = dateFormat.format(currentDisplayDate.getTime());
+            intent.putExtra("date", dateStr);
+
             startActivity(intent);
         });
 
@@ -56,7 +62,6 @@ public class Qna_main extends AppCompatActivity {
             Intent intent = new Intent(Qna_main.this, Qna_listen.class);
             startActivity(intent);
         });
-
 
         // 1. Firebase 및 날짜 초기화
         dbRef = FirebaseDatabase.getInstance().getReference();
@@ -69,30 +74,36 @@ public class Qna_main extends AppCompatActivity {
         setupNavigationListeners();
     }
 
+    // 날짜 및 문답 출력
     private void setupNavigationListeners() {
-        // 'arrowLeft'와 'arrowRight' 사용
         binding.arrowLeft.setOnClickListener(v -> {
-            // 하루 전으로 이동
+            // 하루 전으로 이동 (제한 없음)
             currentDisplayDate.add(Calendar.DAY_OF_YEAR, -1);
             loadDailyQuestion(currentDisplayDate.getTime());
         });
 
         binding.arrowRight.setOnClickListener(v -> {
-            // 미래 날짜 제한 로직 (오늘을 넘어서지 않도록)
+            // 오늘을 기준으로 비교
             Calendar today = Calendar.getInstance();
             today.set(Calendar.HOUR_OF_DAY, 0);
             today.set(Calendar.MINUTE, 0);
             today.set(Calendar.SECOND, 0);
             today.set(Calendar.MILLISECOND, 0);
 
-            Calendar nextDay = (Calendar) currentDisplayDate.clone();
-            nextDay.add(Calendar.DAY_OF_YEAR, 1);
+            // 현재 표시 날짜도 시간 초기화
+            Calendar currentDisplay = (Calendar) currentDisplayDate.clone();
+            currentDisplay.set(Calendar.HOUR_OF_DAY, 0);
+            currentDisplay.set(Calendar.MINUTE, 0);
+            currentDisplay.set(Calendar.SECOND, 0);
+            currentDisplay.set(Calendar.MILLISECOND, 0);
 
-            if (!nextDay.after(today)) {
+            // 현재 날짜가 오늘보다 이전이면 → 오른쪽 이동 가능
+            if (currentDisplay.before(today)) {
                 currentDisplayDate.add(Calendar.DAY_OF_YEAR, 1);
                 loadDailyQuestion(currentDisplayDate.getTime());
             } else {
-                Log.d(TAG, "Cannot move to future date.");
+                // 이미 오늘이면 → 더 이상 진행 불가
+                Log.d(TAG, "이미 오늘입니다. 미래로 갈 수 없습니다.");
             }
         });
     }
@@ -103,7 +114,7 @@ public class Qna_main extends AppCompatActivity {
         SimpleDateFormat queryDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         String queryDate = queryDateFormat.format(dateToLoad);
 
-        SimpleDateFormat displayDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
+        SimpleDateFormat displayDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
         String displayDate = displayDateFormat.format(dateToLoad);
 
         // 날짜 UI 업데이트
@@ -116,21 +127,31 @@ public class Qna_main extends AppCompatActivity {
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         // 질문 불러오기
-        dbRef.child("question").child(queryDate).child("question")
+        dbRef.child("question")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        if (snapshot.exists()) {
-                            String questionText = snapshot.getValue(String.class);
+                        String foundQuestion = null;
 
-                            if (questionText != null) {
-                                binding.question.setText(questionText);
-                            } else {
-                                binding.question.setText("질문 데이터 형식을 확인해주세요.");
+                        // question 아래에 있는 모든(q01, q02...) 반복 탐색
+                        for (DataSnapshot questionSnapshot : snapshot.getChildren()) {
+
+                            String date = questionSnapshot.child("date").getValue(String.class);
+                            String text = questionSnapshot.child("text").getValue(String.class);
+
+                            // date 값이 내가 찾는 날짜와 동일하면 저장
+                            if (date != null && date.equals(queryDate)) {
+                                foundQuestion = text;
+                                break;
                             }
+                        }
 
-                            // 질문을 불러온 뒤 → 그 날짜의 사용자 답변 여부 조회
+                        if (foundQuestion != null) {
+                            // 질문 화면에 표시
+                            binding.question.setText(foundQuestion);
+
+                            // 질문 찾은 뒤 → 답변 여부 조회
                             loadAnswerStatus(uid, queryDate);
 
                         } else {
@@ -139,34 +160,36 @@ public class Qna_main extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "질문 로드 실패", error.toException());
+                    }
                 });
     }
 
+    // 문답 여부에 따른 버튼 활성화
     private void loadAnswerStatus(String uid, String dateKey) {
-
         dbRef.child("users").child(uid).child("answers").child(dateKey)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                        Boolean answered = snapshot.child("answered").getValue(Boolean.class);
-                        boolean isAnswered = answered != null && answered;
+                        boolean hasAnswer = snapshot.exists() &&
+                                snapshot.child("answered").getValue(Boolean.class) == Boolean.TRUE;
 
-                        if (isAnswered) {
-                            // 답변 완료 → 듣기 버튼 활성화
-                            binding.tell.setEnabled(false);
-                            binding.listen.setEnabled(true);
-
-                        } else {
-                            // 답변 미완료 → 답변하기 버튼 활성화
-                            binding.tell.setEnabled(true);
-                            binding.listen.setEnabled(false);
-                        }
+                        // 답변 있으면 듣기 활성화, 없으면 답변하기 활성화
+                        binding.tell.setEnabled(!hasAnswer);
+                        binding.listen.setEnabled(hasAnswer);
                     }
 
                     @Override
-                    public void onCancelled(@NonNull DatabaseError error) {}
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("Firebase", "답변 상태 조회 실패", error.toException());
+                        // 에러 시 답변하기 활성화
+                        binding.tell.setEnabled(true);
+                        binding.listen.setEnabled(false);
+                    }
                 });
     }
+
+
 }
