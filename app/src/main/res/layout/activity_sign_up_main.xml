@@ -59,6 +59,7 @@
         <EditText
             style="@style/TodoInputField"
             android:id="@+id/et_todo_empty"
+            android:hint="이름을 입력해주세요."
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -93,6 +94,7 @@
         <EditText
             style="@style/TodoInputField"
             android:id="@+id/et_todo_empty2"
+            android:hint="비밀번호를 입력해주세요."
             android:layout_width="315dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -124,10 +126,11 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <EditText
+        <AutoCompleteTextView
             style="@style/TodoInputField"
-            android:id="@+id/et_todo_empty3"
+            android:id="@+id/roleSelect"
             android:layout_width="315dp"
+            android:hint="역할을 선택해주세요."
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="12dp"
@@ -153,7 +156,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="4dp"
-            android:text="4자리 연결번호(선택)"
+            android:text="4자리 연결번호"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -161,6 +164,7 @@
             style="@style/TodoInputField"
             android:id="@+id/et_todo_empty4"
             android:layout_width="315dp"
+            android:hint="번호 발급 및 입력"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="12dp"

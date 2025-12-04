@@ -13,7 +13,13 @@
         android:theme="@style/Theme.Project">
         <activity
             android:name=".start.StartPageActivity"
-            android:exported="false" />
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".guardian.G_qna_answer"
             android:exported="false" />
@@ -67,13 +73,7 @@
             android:exported="false" />
         <activity
             android:name=".start.signup.SignUpMainActivity"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>
