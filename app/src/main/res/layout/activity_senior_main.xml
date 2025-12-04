@@ -37,7 +37,7 @@
     <!-- 일정 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_schedule"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -53,7 +53,7 @@
     <!-- 할 일 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_todo"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
@@ -67,7 +67,7 @@
     <!-- 문답 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_qa"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="18dp"
@@ -80,7 +80,7 @@
     <!-- 긴급 통화 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_call"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="18dp"
@@ -94,7 +94,7 @@
     <!-- 안내 다시 듣기 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_listen_again"
-        style="@style/EnabledBtn"
+        style="@style/QnaStateButton"
         android:layout_width="396dp"
         android:layout_height="169dp"
         android:layout_marginStart="24dp"
