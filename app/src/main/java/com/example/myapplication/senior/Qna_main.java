@@ -190,6 +190,4 @@ public class Qna_main extends AppCompatActivity {
                     }
                 });
     }
-
-
 }
