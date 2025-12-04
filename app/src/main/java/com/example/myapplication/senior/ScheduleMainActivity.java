@@ -13,10 +13,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.start.StartPageActivity;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -84,6 +86,11 @@ public class ScheduleMainActivity extends AppCompatActivity {
             });
         }
 
+        MaterialButton btnStop2 = findViewById(R.id.VoulumOnBtn);
+            btnStop2.setOnClickListener(v -> {
+                stopSpeaking();
+            });
+
 
         MaterialButton btnStop = findViewById(R.id.VoulumOnBtn);
         if (btnStop != null) {
@@ -102,12 +109,10 @@ public class ScheduleMainActivity extends AppCompatActivity {
 
         // 종료하기 버튼
         MaterialButton btnExit = findViewById(R.id.btnExit);
-        if (btnExit != null) {
-            btnExit.setOnClickListener(v -> {
-                stopSpeaking();
-                finish();
-            });
-        }
+        btnExit.setOnClickListener(v -> {
+            Intent intent = new Intent(ScheduleMainActivity.this, SeniorTodo.class);
+            startActivity(intent);
+        });
 
         ImageButton leftArrow = findViewById(R.id.left_arrow);
         ImageButton rightArrow = findViewById(R.id.right_arrow);

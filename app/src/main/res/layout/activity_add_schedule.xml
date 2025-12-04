@@ -27,6 +27,7 @@
         android:layout_marginTop="120dp"
         android:lineSpacingMultiplier="0.8"
         android:letterSpacing="-0.02"
+        android:minLines="3"
         android:text="일정 추가하기\n버튼을 눌러\n일정을 알려주세요"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

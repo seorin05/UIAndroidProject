@@ -74,6 +74,11 @@ public class AddScheduleActivity extends AppCompatActivity {
             startVoiceRegistration();
         });
 
+        MaterialButton btnStop2 = findViewById(R.id.VoulumOnBtn);
+        btnStop2.setOnClickListener(v -> {
+            stopSpeaking();
+        });
+
         // TTS 중지 버튼
         btnStop.setOnClickListener(v -> {
             stopSpeaking();
