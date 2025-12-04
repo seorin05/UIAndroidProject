@@ -48,7 +48,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainText" />
+        app:layout_constraintTop_toBottomOf="@+id/mainText"
+
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"/>
 
 
     <LinearLayout
@@ -61,6 +64,7 @@
         app:layout_constraintVertical_bias="0.5">
 
         <ImageView
+            android:id="@+id/arrowLeft"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/arrowbtnleft"
@@ -68,6 +72,7 @@
             tools:layout_editor_absoluteY="212dp" />
 
         <ImageView
+            android:id="@+id/arrowRight"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginStart="300dp"
@@ -89,7 +94,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/tell"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
@@ -98,7 +103,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/listen"
-            style="@style/DisabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
@@ -119,7 +124,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/re"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
@@ -129,7 +134,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/end"
-            style="@style/EnabledBtn"
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginStart="20dp"
