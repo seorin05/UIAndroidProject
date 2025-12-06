@@ -56,7 +56,7 @@
             android:name=".senior.Qna_listen"
             android:exported="false" />
         <activity
-            android:name=".senior.Qna_listen2"
+            android:name=".senior.Qna_listen_sen"
             android:exported="false" />
         <activity
             android:name=".senior.Qna_main"
@@ -79,6 +79,7 @@
         <activity
             android:name=".start.signup.SignUpMainActivity"
             android:exported="false" />
+        <activity android:name=".senior.Qna_listen_gua" />
     </application>
 
 </manifest>

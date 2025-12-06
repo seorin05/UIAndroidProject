@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="109dp"
 
-        android:text="답변을 듣고 있어요 👂"
-        android:textSize="36dp"
+        android:text="준비되면 시작해주세요!"
+        android:textSize="32dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +48,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statusText" />
+        app:layout_constraintTop_toBottomOf="@+id/statusText"
 
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"/>
 
     <LinearLayout
         android:id="@+id/btn1"

@@ -21,11 +21,15 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.databinding.ActivityQnaTellBinding;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -43,6 +47,8 @@ public class Qna_tell extends AppCompatActivity {
 
     private String recognizedText = "";
     private String currentDate;
+    private Calendar currentDisplayDate;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,21 +67,23 @@ public class Qna_tell extends AppCompatActivity {
         // Firebase 초기화
         dbRef = FirebaseDatabase.getInstance().getReference();
 
-        // 현재 날짜 (Intent로 받아오거나 오늘 날짜 사용)
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        currentDate = dateFormat.format(new Date());
-
-        // Intent에서 날짜 받기 (Qna_main에서 전달한 경우)
-        String receivedDate = getIntent().getStringExtra("date");
-        if (receivedDate != null) {
-            currentDate = receivedDate;
-        }
-
         // 권한 체크 및 STT 초기화
         checkPermissionAndInitialize();
 
         // 버튼 리스너 설정
         setupListeners();
+
+        // Intent에서 질문, 날짜 받기
+        String receivedQuestion = getIntent().getStringExtra("questionText");
+        String receivedDate = getIntent().getStringExtra("date");
+
+        if (receivedQuestion != null) {
+            binding.question.setText(receivedQuestion);  // 그대로 표시!
+        }
+
+        if (receivedDate != null) {
+            currentDate = receivedDate;
+        }
     }
 
     private void checkPermissionAndInitialize() {
@@ -273,4 +281,5 @@ public class Qna_tell extends AppCompatActivity {
             speechRecognizer.destroy();
         }
     }
+
 }
