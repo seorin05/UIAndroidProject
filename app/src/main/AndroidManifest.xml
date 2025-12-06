@@ -32,8 +32,7 @@
         <activity
             android:name=".guardian.G_sche_add"
             android:exported="false" />
-        <activity
-            android:name=".guardian.G_sche_main"
+        <activity android:name=".guardian.G_sche_main"
             android:exported="false" />
         <activity
             android:name=".guardian.GuardianTodoAdd"

@@ -30,7 +30,7 @@ public class StartPageActivity extends AppCompatActivity {
                 Intent intent = new Intent(StartPageActivity.this, LogInMainActivity.class);
                 startActivity(intent);
             }
-    });
+        });
 
         Button signUp = findViewById(R.id.sign_up);
         signUp.setOnClickListener(new View.OnClickListener() {
@@ -40,5 +40,5 @@ public class StartPageActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-}
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.myapplication.start.login;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
+import com.example.myapplication.guardian.G_sche_main;
+import com.example.myapplication.senior.ScheduleMainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -105,12 +108,31 @@ public class LogInMainActivity extends AppCompatActivity {
                                             String savedCode = snapshot.child("connectionCode").getValue(String.class);
 
                                             if (role.equals("어르신")) {
-                                                // 어르신은 연결번호 확인 없이 로그인
                                                 Toast.makeText(this, "로그인 성공! 역할: 어르신", Toast.LENGTH_SHORT).show();
+
+                                                if (savedCode != null) {
+                                                    getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                                                            .edit()
+                                                            .putString("familyId", savedCode)
+                                                            .apply();
+                                                }
+
+                                                Intent intent = new Intent(LogInMainActivity.this, ScheduleMainActivity.class);
+                                                startActivity(intent);
+                                                finish();
+
                                             } else if (role.equals("보호자")) {
-                                                // 보호자는 연결번호 확인 필요
                                                 if (savedCode != null && savedCode.equals(connectionCode)) {
                                                     Toast.makeText(this, "로그인 성공! 역할: 보호자", Toast.LENGTH_SHORT).show();
+
+                                                    getSharedPreferences("UserPrefs", MODE_PRIVATE)
+                                                            .edit()
+                                                            .putString("familyId", savedCode)
+                                                            .apply();
+
+                                                    Intent intent = new Intent(LogInMainActivity.this, G_sche_main.class);
+                                                    startActivity(intent);
+                                                    finish();
                                                 } else {
                                                     Toast.makeText(this, "연결번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show();
                                                     auth.signOut();
