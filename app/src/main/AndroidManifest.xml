@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
-            android:name=".senior.SeniorMain"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,7 +65,7 @@
             android:name=".senior.ScheduleMainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".senior.SeniorMain"
             android:exported="false" />
         <activity
             android:name=".senior.SeniorTodo"

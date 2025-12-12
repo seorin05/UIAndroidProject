@@ -2,6 +2,7 @@ package com.example.myapplication.guardian;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -174,7 +175,14 @@ public class GuardianTodoAdd extends AppCompatActivity {
     private void saveToFirebase() {
         String content = etTodoContent.getText().toString().trim();
         String time = tvTimeSelect.getText().toString();
-        String groupCode = "1234"; // 나중엔 로그인 정보로 교체
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String groupCode = prefs.getString("familyId", ""); // 저장된 코드 꺼내기
+
+        if (groupCode.isEmpty()) {
+            Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+            finish(); // 코드가 없으면 화면 닫기
+            return;
+        }
 
         // 1. 시간을 비교 가능한 숫자(분)로 변환 (예: 오후 12:00 -> 720)
         int minutes = convertToMinutes(time);

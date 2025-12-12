@@ -2,6 +2,7 @@ package com.example.myapplication.guardian;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -100,8 +101,14 @@ public class GuardianTodoDelete extends AppCompatActivity {
         });
         recyclerView.setAdapter(adapter);
 
-        // 1. 파이어베이스 데이터 가져오기 (메인과 동일)
-        String groupCode = "1234";
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String groupCode = prefs.getString("familyId", ""); // 저장된 코드 꺼내기
+
+        if (groupCode.isEmpty()) {
+            Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+            finish(); // 코드가 없으면 화면 닫기
+            return;
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference("Todos").child(groupCode);
 
         mDatabase.addValueEventListener(new ValueEventListener() {

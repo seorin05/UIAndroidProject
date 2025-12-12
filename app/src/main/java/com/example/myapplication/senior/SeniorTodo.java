@@ -1,6 +1,7 @@
 package com.example.myapplication.senior;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -55,7 +56,14 @@ public class SeniorTodo extends AppCompatActivity {
         adapter = new SeniorTodoAdapter(todoList);
         viewPager.setAdapter(adapter);
 
-        String groupCode = "1234";
+        SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        String groupCode = prefs.getString("familyId", ""); // 저장된 코드 꺼내기
+
+        if (groupCode.isEmpty()) {
+            Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show();
+            finish(); // 코드가 없으면 화면 닫기
+            return;
+        }
         mDatabase = FirebaseDatabase.getInstance().getReference("Todos").child(groupCode);
 
         // 3. 데이터 불러오기
