@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,31 +37,24 @@ public class GuardianTodoDelete extends AppCompatActivity {
     private TodoDeleteAdapter adapter;
     private List<TodoItem> todoList;
     private DatabaseReference mDatabase;
-    private MaterialButton btnDelete; // 삭제 버튼
+    private MaterialButton btnDelete;
+    private String groupCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guardian_todo_delete);
 
-        // 버튼 설정
         btnDelete = findViewById(R.id.btn_delete_todo);
         recyclerView = findViewById(R.id.rv_todo_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        ImageView alarm=findViewById(R.id.received_alarm); // 알람 화면으로 가는 버튼 추가
+
         LinearLayout gotoCalendar = findViewById(R.id.nav_calendar);
         LinearLayout gotoQna = findViewById(R.id.nav_notification);
         LinearLayout gotoTodo = findViewById(R.id.nav_todo);
 
         todoList = new ArrayList<>();
 
-        //        alarm.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent=new Intent(getApplicationContext(),G_sche_main.class);
-//                startActivity(intent);
-//            }
-//        });
         gotoCalendar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -85,30 +77,28 @@ public class GuardianTodoDelete extends AppCompatActivity {
             }
         });
 
-        // 어댑터 초기화 및 리스너 설정 (선택 개수 변경 시 호출됨)
         adapter = new TodoDeleteAdapter(todoList, count -> {
             if (count > 0) {
-                // 1개 이상 선택됨 -> 버튼 활성화 (주황색)
                 btnDelete.setEnabled(true);
-                btnDelete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FC8A00"))); // BtnP 색상
+                btnDelete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FC8A00")));
                 btnDelete.setText("할 일 삭제하기");
             } else {
-                // 선택 안됨 -> 버튼 비활성화 (회색)
                 btnDelete.setEnabled(false);
-                btnDelete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7D7D7"))); // BtnD 색상
+                btnDelete.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#D7D7D7")));
                 btnDelete.setText("할 일 삭제하기");
             }
         });
         recyclerView.setAdapter(adapter);
 
         SharedPreferences prefs = getSharedPreferences("UserPrefs", MODE_PRIVATE);
-        String groupCode = prefs.getString("familyId", ""); // 저장된 코드 꺼내기
+        groupCode = prefs.getString("familyId", "");
 
         if (groupCode.isEmpty()) {
             Toast.makeText(this, "로그인 정보가 없습니다.", Toast.LENGTH_SHORT).show();
-            finish(); // 코드가 없으면 화면 닫기
+            finish();
             return;
         }
+
         mDatabase = FirebaseDatabase.getInstance().getReference("Todos").child(groupCode);
 
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -118,7 +108,10 @@ public class GuardianTodoDelete extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TodoItem todoItem = dataSnapshot.getValue(TodoItem.class);
                     if (todoItem != null) {
-                        todoItem.key = dataSnapshot.getKey(); // 키 저장
+                        String key = dataSnapshot.getKey();
+                        todoItem.setTodoId(key);
+                        todoItem.key = key;
+
                         todoList.add(todoItem);
                     }
                 }
@@ -128,11 +121,9 @@ public class GuardianTodoDelete extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {}
         });
 
-        // 2. 삭제 버튼 클릭 시 다이얼로그 띄우기
         btnDelete.setOnClickListener(v -> showDeleteDialog());
     }
 
-    // 다이얼로그 표시 메서드
     private void showDeleteDialog() {
         Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -146,7 +137,6 @@ public class GuardianTodoDelete extends AppCompatActivity {
         Button btnYes = dialog.findViewById(R.id.btn_yes);
         Button btnNo = dialog.findViewById(R.id.btn_no);
 
-        // 선택된 항목들 텍스트 만들기
         List<String> selectedContents = adapter.getSelectedContents();
         StringBuilder message = new StringBuilder();
         for (String content : selectedContents) {
@@ -155,10 +145,8 @@ public class GuardianTodoDelete extends AppCompatActivity {
         message.append("할 일을 삭제할까요?");
         tvMessage.setText(message.toString());
 
-        // "아니요" -> 닫기
         btnNo.setOnClickListener(v -> dialog.dismiss());
 
-        // "네" -> 실제 삭제 수행
         btnYes.setOnClickListener(v -> {
             deleteSelectedItems();
             dialog.dismiss();
@@ -167,23 +155,21 @@ public class GuardianTodoDelete extends AppCompatActivity {
         dialog.show();
     }
 
-    // 실제 파이어베이스 삭제 메서드
     private void deleteSelectedItems() {
         List<String> keysToDelete = adapter.getSelectedKeys();
-        String groupCode = "1234";
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Todos").child(groupCode);
 
-        for (String key : keysToDelete) {
-            ref.child(key).removeValue(); // 해당 키의 데이터 삭제
+        if (mDatabase != null) {
+            for (String key : keysToDelete) {
+                mDatabase.child(key).removeValue();
+            }
+            Toast.makeText(this, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getApplicationContext(), GuardianTodoMain.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            Toast.makeText(this, "데이터베이스 연결 오류", Toast.LENGTH_SHORT).show();
         }
-
-        Toast.makeText(this, "삭제되었습니다.", Toast.LENGTH_SHORT).show();
-
-        // 메인 화면으로 이동
-        Intent intent = new Intent(getApplicationContext(), GuardianTodoMain.class);
-        // 뒤로가기 방지
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finish();
     }
 }

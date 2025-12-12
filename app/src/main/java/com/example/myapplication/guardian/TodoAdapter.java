@@ -1,6 +1,5 @@
 package com.example.myapplication.guardian;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +14,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.TodoItem;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
 public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder> {
 
     private List<TodoItem> todoList;
+    private String groupCode;
 
-    public TodoAdapter(List<TodoItem> todoList) {
+    public TodoAdapter(List<TodoItem> todoList, String groupCode) {
         this.todoList = todoList;
+        this.groupCode = groupCode;
     }
 
     @NonNull
@@ -37,53 +40,50 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
     public void onBindViewHolder(@NonNull TodoViewHolder holder, int position) {
         TodoItem item = todoList.get(position);
 
-        // 1. 텍스트 설정
         holder.tvTime.setText(item.time);
         holder.tvContent.setText(item.content);
 
-        // 색상 정의
         int orangeColor = Color.parseColor("#FF9800");
         int whiteColor = Color.WHITE;
 
-        // 2. 완료 여부(isCompleted)에 따른 디자인 분기
         if (item.isCompleted) {
-            // === [완료 상태] ===
-            // 배경: 회색
             holder.container.setBackgroundResource(R.drawable.todo_btn_complete_bg);
-
-            // 글자색: 흰색
             holder.tvTime.setTextColor(whiteColor);
             holder.tvContent.setTextColor(whiteColor);
-
-            // 아이콘: 초록색 체크
             holder.ivIcon.setImageResource(R.drawable.ic_check);
 
-            // ★ 클릭 방지: 리스너를 제거하고 클릭 불가능하게 설정
             holder.ivIcon.setOnClickListener(null);
             holder.ivIcon.setClickable(false);
-            holder.itemView.setClickable(false); // 아이템 전체 클릭 방지
+            holder.itemView.setClickable(false);
 
         } else {
-            // === [미완료 상태] ===
-            // 배경: 주황 테두리 (기존)
             holder.container.setBackgroundResource(R.drawable.todo_btn_incomplete_bg);
-
-            // 글자색: 주황색
             holder.tvTime.setTextColor(orangeColor);
             holder.tvContent.setTextColor(orangeColor);
-
-            // 아이콘: 주황색 종(알림)
             holder.ivIcon.setImageResource(R.drawable.ic_calendar);
 
-            // ★ 종 아이콘 클릭 이벤트 설정
             holder.ivIcon.setClickable(true);
             holder.ivIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // 여기에 "알림 보내기" 기능 구현
-                    Toast.makeText(v.getContext(), item.content + " 알림을 전송합니다!", Toast.LENGTH_SHORT).show();
+                    if (item.getTodoId() == null || groupCode == null) {
+                        Toast.makeText(v.getContext(), "오류: 항목 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                    // (나중에 여기에 파이어베이스 FCM 알림 전송 코드를 넣어야됨)
+                    DatabaseReference ref = FirebaseDatabase.getInstance()
+                            .getReference("Todos")
+                            .child(groupCode)
+                            .child(item.getTodoId())
+                            .child("pushAlert");
+
+                    ref.setValue(true)
+                            .addOnSuccessListener(aVoid -> {
+                                Toast.makeText(v.getContext(), "📢 [" + item.content + "] 알림을 보냈습니다!", Toast.LENGTH_SHORT).show();
+                            })
+                            .addOnFailureListener(e -> {
+                                Toast.makeText(v.getContext(), "알림 전송 실패", Toast.LENGTH_SHORT).show();
+                            });
                 }
             });
         }
@@ -94,20 +94,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         return (todoList != null) ? todoList.size() : 0;
     }
 
-    // 뷰 홀더: XML의 ID들을 찾아서 보관
     public static class TodoViewHolder extends RecyclerView.ViewHolder {
         LinearLayout container;
         TextView tvTime;
         TextView tvContent;
-        ImageView ivIcon; // 아이콘 변수 추가
+        ImageView ivIcon;
 
         public TodoViewHolder(@NonNull View itemView) {
             super(itemView);
-            // activity의 findViewById가 아니라 itemView.findViewById를 씁니다!
             container = itemView.findViewById(R.id.btn_todo_container);
             tvTime = itemView.findViewById(R.id.tv_todo_time);
             tvContent = itemView.findViewById(R.id.tv_todo_content);
-            ivIcon = itemView.findViewById(R.id.iv_todo_icon); // XML ID 연결
+            ivIcon = itemView.findViewById(R.id.iv_todo_icon);
         }
     }
 }

@@ -1,9 +1,16 @@
 package com.example.myapplication.senior;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -12,12 +19,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.myapplication.R;
 import com.example.myapplication.TodoItem;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,13 +53,16 @@ public class SeniorTodo extends AppCompatActivity {
 
     private TextToSpeech tts;
     private boolean isTtsReady = false;
-
     private boolean isInitialLoad = true;
+
+    private static final String CHANNEL_ID = "guardian_alert_channel";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_senior_todo);
+
+        createNotificationChannel();
 
         viewPager = findViewById(R.id.todo_list);
         leftArrow = findViewById(R.id.left_arrow);
@@ -67,11 +82,12 @@ public class SeniorTodo extends AppCompatActivity {
             if (status == TextToSpeech.SUCCESS) {
                 int result = tts.setLanguage(Locale.KOREAN);
                 if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Log.e("TTS", "한국어 지원 불가");
+                    Log.e("TTS", "Language not supported");
                 } else {
                     isTtsReady = true;
-                    if (!todoList.isEmpty()) {
+                    if (!todoList.isEmpty() && isInitialLoad) {
                         speakCurrentTask(true);
+                        isInitialLoad = false;
                     }
                 }
             }
@@ -103,12 +119,41 @@ public class SeniorTodo extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
                 updateUI(viewPager.getCurrentItem());
 
-                if (isInitialLoad && !todoList.isEmpty()) {
+                if (isTtsReady && isInitialLoad && !todoList.isEmpty()) {
                     speakCurrentTask(true);
                     isInitialLoad = false;
                 }
             }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+        mDatabase.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                TodoItem item = snapshot.getValue(TodoItem.class);
+
+                if (item != null && item.isPushAlert()) {
+
+                    showNotification(item.content);
+
+                    if (isTtsReady && tts != null) {
+                        tts.stop();
+                        String alertMsg = "보호자님이, " + item.content + ", 할 일을 확인해 달라고 알림을 보냈습니다.";
+                        tts.speak(alertMsg, TextToSpeech.QUEUE_FLUSH, null, "GuardianAlert");
+                    }
+
+                    snapshot.getRef().child("pushAlert").setValue(false);
+                }
+            }
+
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
@@ -145,6 +190,39 @@ public class SeniorTodo extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+    }
+
+    private void showNotification(String todoContent) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Intent intent = new Intent(this, SeniorTodo.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_calendar)
+                .setContentTitle("보호자 알림")
+                .setContentText(todoContent + " 할 일을 확인해주세요!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        notificationManager.notify((int) System.currentTimeMillis(), builder.build());
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Guardian Alert";
+            String description = "Alert from Guardian";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
 
     private void speakCurrentTask(boolean isAuto) {
