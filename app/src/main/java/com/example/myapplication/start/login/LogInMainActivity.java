@@ -14,6 +14,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.PriorityVoice;
 import com.example.myapplication.R;
 import com.example.myapplication.guardian.G_sche_main;
 import com.example.myapplication.guardian.GuardianTodoMain;
@@ -119,7 +120,7 @@ public class LogInMainActivity extends AppCompatActivity {
                                                             .apply();
                                                 }
 
-                                                Intent intent = new Intent(LogInMainActivity.this, SeniorMain.class);
+                                                Intent intent = new Intent(LogInMainActivity.this, PriorityVoice.class);
                                                 startActivity(intent);
                                                 finish();
 

@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="orange">#FF9800</color>
     <color name="gray">#BEBEBE</color>
+    <color name="priority_orange">#E55F33
+    </color> <color name="priority_blue">#90CAF9</color>
+    <color name="priority_gray">#B0B0B0</color>
+    <color name="dark_gray">#333333</color>
 </resources>
