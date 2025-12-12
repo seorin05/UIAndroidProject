@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
         <activity
-            android:name=".MainActivity"
+            android:name=".start.StartPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,8 +34,7 @@
         <activity
             android:name=".guardian.G_sche_add"
             android:exported="false" />
-        <activity
-            android:name=".guardian.G_sche_main"
+        <activity android:name=".guardian.G_sche_main"
             android:exported="false" />
         <activity
             android:name=".guardian.GuardianTodoAdd"
@@ -75,9 +74,6 @@
             android:exported="false" />
         <activity
             android:name=".start.signup.SignUpMainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".start.StartPageActivity"
             android:exported="false" />
     </application>
 
