@@ -3,7 +3,7 @@ package com.example.myapplication.senior;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech; // TTS 기능을 위해 추가
+import android.speech.tts.TextToSpeech; // TTS 기능
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class SeniorMain extends AppCompatActivity {
 
-    private TextToSpeech tts; // 음성 안내 객체
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +113,6 @@ public class SeniorMain extends AppCompatActivity {
                     "위급한 상황에는 긴급 통화 버튼을 누르시면 됩니다. " +
                     "설명을 다시 듣고 싶으시면, 맨 아래의 안내 다시 듣기 버튼을 눌러주세요.";
 
-            // 기존 음성을 끊고(QUEUE_FLUSH) 바로 말하기
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "GuideID");
         }
     }

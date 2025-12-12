@@ -110,7 +110,7 @@ public class ScheduleMainActivity extends AppCompatActivity {
         // 종료하기 버튼
         MaterialButton btnExit = findViewById(R.id.btnExit);
         btnExit.setOnClickListener(v -> {
-            Intent intent = new Intent(ScheduleMainActivity.this, SeniorTodo.class);
+            Intent intent = new Intent(ScheduleMainActivity.this, SeniorMain.class);
             startActivity(intent);
         });
 

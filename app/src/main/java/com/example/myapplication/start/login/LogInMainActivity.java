@@ -16,7 +16,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.myapplication.R;
 import com.example.myapplication.guardian.G_sche_main;
+import com.example.myapplication.guardian.GuardianTodoMain;
 import com.example.myapplication.senior.ScheduleMainActivity;
+import com.example.myapplication.senior.SeniorMain;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -117,7 +119,7 @@ public class LogInMainActivity extends AppCompatActivity {
                                                             .apply();
                                                 }
 
-                                                Intent intent = new Intent(LogInMainActivity.this, ScheduleMainActivity.class);
+                                                Intent intent = new Intent(LogInMainActivity.this, SeniorMain.class);
                                                 startActivity(intent);
                                                 finish();
 
@@ -130,7 +132,7 @@ public class LogInMainActivity extends AppCompatActivity {
                                                             .putString("familyId", savedCode)
                                                             .apply();
 
-                                                    Intent intent = new Intent(LogInMainActivity.this, G_sche_main.class);
+                                                    Intent intent = new Intent(LogInMainActivity.this, GuardianTodoMain.class);
                                                     startActivity(intent);
                                                     finish();
                                                 } else {
