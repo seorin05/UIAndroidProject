@@ -2,6 +2,9 @@ package com.example.myapplication.senior;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.speech.tts.TextToSpeech;
+import android.view.Gravity;
+import android.widget.Button;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
@@ -10,6 +13,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityQnaListen2Binding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +32,15 @@ public class Qna_listen_gua extends AppCompatActivity {
     private DatabaseReference dbRef;
     private String seniorUid;
 
+    // ===== TTS 관련 =====
+    private TextToSpeech textToSpeech;
+    private boolean isTtsReady = false;
+    private boolean isTtsEnabled = true;
+
+    private String currentGuideScript = "";
+    private Button volumeOnBtn;
+    private Date selectedDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,91 +56,94 @@ public class Qna_listen_gua extends AppCompatActivity {
         });
 
         dbRef = FirebaseDatabase.getInstance().getReference();
-        seniorUid = FirebaseAuth.getInstance().getCurrentUser().getUid(); // 현재 로그인한 어르신 UID
+        seniorUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        // 날짜 받기 (yyyy-MM-dd)
+        // ===== 날짜 받기 =====
         String dateKey = getIntent().getStringExtra("selectDate");
-
         if (dateKey == null) {
             binding.mainText.setText("[ 날짜 없음 ]");
             binding.answerText.setText("날짜 정보가 전달되지 않았습니다.");
             return;
         }
 
-        // 날짜 표시 (MM월 dd일)
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            Date date = sdf.parse(dateKey);
+            selectedDate = sdf.parse(dateKey);
 
-            SimpleDateFormat displayFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
-            String displayDate = displayFormat.format(date);
+            String displayDate = new SimpleDateFormat(
+                    "MM월 dd일", Locale.KOREA
+            ).format(selectedDate);
 
             binding.mainText.setText("[ " + displayDate + " 답변 ]");
 
         } catch (Exception e) {
-            e.printStackTrace();
             binding.mainText.setText("[ 날짜 오류 ]");
         }
 
-        // 보호자 UID 찾고 답변 불러오기 (users 루트 기준)
+        // ===== TTS 초기화 =====
+        initializeTextToSpeech();
+
+        volumeOnBtn = findViewById(R.id.volumeOnBtn);
+        isTtsEnabled = TtsStateManager.isTtsEnabled(this);
+        updateVolumeButtonUi();
+
+        volumeOnBtn.setOnClickListener(v -> toggleTts());
+
+        binding.re.setOnClickListener(v -> {
+            if (!currentGuideScript.isEmpty()) {
+                speak(currentGuideScript, true);
+            }
+        });
+
+        // ===== 보호자 답변 로드 =====
         loadGuardianUidAndAnswer(dateKey);
 
         binding.end.setOnClickListener(v -> {
-            startActivity(new Intent(Qna_listen_gua.this, Qna_main.class));
+            startActivity(new Intent(this, Qna_main.class));
         });
     }
 
-    /**
-     * users 루트 아래에서 connectedElderlyId == seniorUid 인 '보호자' role 사용자를 찾음.
-     * (Firebase 구조가 users/{uid}/connectedElderlyId 인 경우에 맞춤)
-     */
+    // ================= 보호자 UID 찾기 =================
     private void loadGuardianUidAndAnswer(String dateKey) {
 
-        // users 루트에서 connectedElderlyId가 seniorUid인 사용자들 검색
         dbRef.child("users")
                 .orderByChild("connectedElderlyId")
                 .equalTo(seniorUid)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
                         if (!snapshot.exists()) {
                             binding.answerText.setText("연결된 보호자가 없습니다.");
-                            Log.w("QNA_GUA", "users에서 connectedElderlyId == " + seniorUid + " 인 항목 없음");
+                            currentGuideScript = "연결된 보호자가 없습니다.";
+                            speak(currentGuideScript, true);
                             return;
                         }
 
-                        // 보호자 역할(role == "보호자")인 항목을 찾아 첫번째 것을 사용
                         for (DataSnapshot userSnap : snapshot.getChildren()) {
-
                             String role = userSnap.child("role").getValue(String.class);
 
                             if ("보호자".equals(role)) {
                                 String guardianUid = userSnap.getKey();
-                                Log.d("QNA_GUA", "찾은 보호자 UID = " + guardianUid);
-
-                                // 찾은 보호자 UID로 답변 불러오기
                                 loadDailyAnswer(guardianUid, dateKey);
                                 return;
                             }
                         }
 
-                        // 일치하는 보호자 role을 못찾았을 때
                         binding.answerText.setText("연결된 보호자를 찾을 수 없습니다.");
-                        Log.w("QNA_GUA", "connectedElderlyId 일치 항목은 있으나 role==보호자 없음");
+                        currentGuideScript = "연결된 보호자를 찾을 수 없습니다.";
+                        speak(currentGuideScript, true);
                     }
 
                     @Override
                     public void onCancelled(DatabaseError error) {
                         binding.answerText.setText("오류가 발생했습니다.");
-                        Log.e("QNA_GUA", "보호자 조회 중 onCancelled", error.toException());
                     }
                 });
     }
 
-    /**
-     * users/{guardianUid}/answers/{dateKey}/answerText 를 읽어와서 화면에 표시
-     */
+    // ================= 보호자 답변 불러오기 =================
     private void loadDailyAnswer(String guardianUid, String dateKey) {
 
         dbRef.child("users")
@@ -135,31 +151,94 @@ public class Qna_listen_gua extends AppCompatActivity {
                 .child("answers")
                 .child(dateKey)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
                         if (!snapshot.exists()) {
                             binding.answerText.setText("아직 답변이 없습니다.");
-                            Log.i("QNA_GUA", "guardianUid=" + guardianUid + " 에 dateKey=" + dateKey + " 의 answers 노드 없음");
+                            currentGuideScript = "아직 작성된 답변이 없습니다.";
+                            speak(currentGuideScript, true);
                             return;
                         }
 
-                        String answerText = snapshot.child("answerText").getValue(String.class);
+                        String answerText =
+                                snapshot.child("answerText").getValue(String.class);
 
                         if (answerText != null && !answerText.isEmpty()) {
                             binding.answerText.setText(answerText);
-                            Log.d("QNA_GUA", "답변 로드 성공: " + answerText);
+
+                            currentGuideScript =
+                                    makeGuideScript(
+                                            selectedDate,
+                                            answerText
+                                    );
+
+                            speak(currentGuideScript, true);
                         } else {
-                            binding.answerText.setText("답변이 없습니다!");
-                            Log.i("QNA_GUA", "answers 노드는 존재하지만 answerText 가 비어있음");
+                            binding.answerText.setText("답변이 없습니다.");
+                            currentGuideScript = "답변이 없습니다.";
+                            speak(currentGuideScript, true);
                         }
                     }
 
                     @Override
                     public void onCancelled(DatabaseError error) {
                         binding.answerText.setText("오류가 발생했습니다.");
-                        Log.e("QNA_GUA", "답변 불러오기 실패", error.toException());
                     }
                 });
+    }
+
+    // ================= 안내 멘트 =================
+    private String makeGuideScript(Date date, String answerText) {
+
+        String dateStr = new SimpleDateFormat(
+                "M월 d일", Locale.KOREA
+        ).format(date);
+
+        return dateStr +
+                "에 작성된 답변입니다. " +
+                answerText + ". " +
+                "안내를 다시 들으려면 안내 다시 듣기 버튼을 눌러주세요.";
+    }
+
+    // ================= TTS =================
+    private void initializeTextToSpeech() {
+        textToSpeech = new TextToSpeech(this, status -> {
+            if (status == TextToSpeech.SUCCESS) {
+                int result = textToSpeech.setLanguage(Locale.KOREAN);
+                isTtsReady = result != TextToSpeech.LANG_NOT_SUPPORTED
+                        && result != TextToSpeech.LANG_MISSING_DATA;
+            }
+        });
+    }
+
+    private void speak(String text, boolean force) {
+        if (!isTtsReady || !TtsStateManager.isTtsEnabled(this)) return;
+        if (force) textToSpeech.stop();
+
+        textToSpeech.speak(
+                text,
+                TextToSpeech.QUEUE_FLUSH,
+                null,
+                "tts"
+        );
+    }
+
+    private void toggleTts() {
+        isTtsEnabled = !isTtsEnabled;
+        TtsStateManager.setTtsEnabled(this, isTtsEnabled);
+        if (!isTtsEnabled) textToSpeech.stop();
+        updateVolumeButtonUi();
+    }
+
+    private void updateVolumeButtonUi() {
+        if (isTtsEnabled) {
+            volumeOnBtn.setText("🔇 음성 중단하기");
+            volumeOnBtn.setGravity(Gravity.START);
+        } else {
+            volumeOnBtn.setText("🔈 음성 재생하기");
+            volumeOnBtn.setGravity(Gravity.END);
+        }
     }
 }

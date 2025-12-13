@@ -112,7 +112,8 @@ import com.example.myapplication.senior.TtsStateManager;
             // 4. 버튼 클릭 리스너
             volumeOnBtn.setOnClickListener(v -> toggleTts());
 
-            isTtsEnabled = TtsStateManager.isTtsEnabled(this);
+            isTtsEnabled = true;
+            TtsStateManager.setTtsEnabled(this, true);
             updateVolumeButtonUi();
         }
 
