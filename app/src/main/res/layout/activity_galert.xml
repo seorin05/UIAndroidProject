@@ -5,14 +5,14 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".guardian.G_qna_main">
+    tools:context=".guardian.G_alert">
 
-    <!-- header -->
+    <!-- 헤더 -->
     <FrameLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
         <View
             android:id="@+id/header_background"
@@ -21,103 +21,72 @@
             android:background="#FFD5A2" />
 
         <ImageView
-            android:id="@+id/message"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
-            android:layout_marginTop="50dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginTop="50dp"
             android:src="@drawable/ic_mail" />
     </FrameLayout>
 
-    <TextView
-        android:id="@+id/mainText"
-        style="@style/BoldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-
-        android:text="[ @월 @일 문답 ]"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/frameLayout" />
-
-    <TextView
-        android:id="@+id/question"
-        style="@style/TextBoxWhite"
-        android:layout_width="0dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="40dp"
-
-        android:text="살아오면서 가장\n행복했던 순간은?"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainText" />
-
+    <!-- 오늘 알림 -->
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/todayAlert"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="@id/question"
-        app:layout_constraintBottom_toBottomOf="@id/question"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/header"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.5">
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
-        <ImageView
-            android:id="@+id/arrowLeft"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/arrowbtnleft"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="212dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘 알림"
+            android:textStyle="bold"/>
 
-        <ImageView
-            android:id="@+id/arrowRight"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="300dp"
-            android:scaleX="-1"
-            android:src="@drawable/arrowbtnleft"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="25dp"
-            tools:layout_editor_absoluteY="212dp" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[할 일 내용]을 완료하였습니다. [완료 시간]" />
+
     </LinearLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnAnswer"
-        android:background="@drawable/btn_qna_action"
+    <!-- 지난 알림 -->
+    <LinearLayout
+        android:id="@+id/yesterdayAlert"
+
         android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="32dp"
-        android:text="답변하기"
-        android:backgroundTint="@null"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/todayAlert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/question"/>
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnListen"
-        android:background="@drawable/btn_qna_action"
-        android:backgroundTint="@null"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginTop="8dp"
-        android:text="상대방 답변 보기"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnAnswer"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지난 알림"
+            android:textStyle="bold"/>
 
-    <!-- 푸터 문답선택-->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[할 일 내용]을 완료하였습니다. [완료 시간]" />
+
+    </LinearLayout>
+
+    <!-- 푸터 할 일 선택-->
     <FrameLayout
+        android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="130dp"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -130,14 +99,13 @@
             android:layout_gravity="bottom"
             android:background="#2C2C2C" />
 
+        <!-- 네비게이션 버튼들 -->
         <LinearLayout
             android:id="@+id/footer"
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:gravity="bottom"
-            android:orientation="horizontal"
-            android:layout_marginBottom="12dp"
-            android:layout_gravity="center_horizontal|bottom" >
+            android:orientation="horizontal">
 
             <!-- 캘린더 버튼 -->
             <LinearLayout
@@ -174,45 +142,9 @@
 
             </LinearLayout>
 
-            <!-- 할일 버튼 -->
-
-            <!-- 알림 버튼 (선택됨 - 위로 튀어나옴) -->
+            <!-- 할일 버튼 (선택됨 - 위로 튀어나옴) -->
             <LinearLayout
                 android:id="@+id/nav_todo"
-                android:layout_width="0dp"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <FrameLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <!-- 흰색 원형 배경 -->
-                    <View
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:background="@drawable/circle_white_bg" />
-
-                    <!-- 종 아이콘 -->
-                    <ImageView
-                        android:id="@+id/nav_todo_icon"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center"
-                        android:contentDescription="할일"
-                        android:src="@drawable/ic_bell_yellow" />
-
-                </FrameLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/nav_notification"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -233,29 +165,61 @@
                         android:layout_height="70dp"
                         android:background="@drawable/circle_white_bg" />
 
-                    <!-- 편지 아이콘 -->
+                    <!-- 종 아이콘 -->
                     <ImageView
-                        android:id="@+id/nav_notification_icon"
+                        android:id="@+id/nav_todo_icon"
                         android:layout_width="45dp"
                         android:layout_height="45dp"
                         android:layout_gravity="center"
-                        android:contentDescription="알림"
-                        android:src="@drawable/ic_letter" />
+                        android:contentDescription="할일"
+                        android:src="@drawable/ic_bell_yellow" />
 
                 </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="알림"
+                    android:text="할 일"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
-        </LinearLayout>
+            <!-- 알림 버튼 -->
+            <LinearLayout
+                android:id="@+id/nav_notification"
+                android:layout_width="0dp"
+                android:layout_height="80dp"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-        <!-- 네비게이션 버튼들 -->
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!-- 흰색 원형 배경 -->
+                    <View
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/circle_white_bg" />
+
+                    <!-- 편지 아이콘 -->
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center"
+                        android:contentDescription="알림"
+                        android:src="@drawable/ic_letter" />
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
