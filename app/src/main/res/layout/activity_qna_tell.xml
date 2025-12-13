@@ -26,8 +26,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="109dp"
 
-        android:text="답변을 듣고 있어요 👂"
-        android:textSize="36dp"
+        android:text="준비되면 시작하기\n버튼을 눌러주세요!"
+        android:textSize="30dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

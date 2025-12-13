@@ -79,13 +79,8 @@
             android:textSize="43dp" />
 
         <com.google.android.material.button.MaterialButton
-<<<<<<< HEAD
-            android:id="@+id/BtnTodo"
-            style="@style/QnaStateButton"
-=======
             android:id="@+id/btnStop"
-            style="@style/EnabledBtn"
->>>>>>> origin/main
+            style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:textSize="43dp"
@@ -106,13 +101,8 @@
         app:layout_constraintTop_toBottomOf="@+id/row1">
 
         <com.google.android.material.button.MaterialButton
-<<<<<<< HEAD
-            android:id="@+id/BtnQna"
             style="@style/QnaStateButton"
-=======
             android:id="@+id/BtnRetry"
-            style="@style/EnabledBtn"
->>>>>>> origin/main
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:textSize="43dp"
@@ -120,13 +110,8 @@
             android:text="다시\n듣기" />
 
         <com.google.android.material.button.MaterialButton
-<<<<<<< HEAD
-            android:id="@+id/BtnEmergency"
             style="@style/QnaStateButton"
-=======
-            android:id="@+id/BtnExit"
-            style="@style/EnabledBtn"
->>>>>>> origin/main
+            android:id="@+id/btnExit"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:text="취소" />
