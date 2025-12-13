@@ -87,32 +87,30 @@
             tools:layout_editor_absoluteY="212dp" />
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAnswer"
+        android:background="@drawable/btn_qna_action"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="32dp"
-
-        style="@style/BtnP"
         android:text="답변하기"
-
+        android:backgroundTint="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/question"/>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnListen"
+        android:background="@drawable/btn_qna_action"
+        android:backgroundTint="@null"
         android:layout_width="0dp"
         android:layout_height="100dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
         android:layout_marginTop="8dp"
-
-        style="@style/BtnD"
         android:text="상대방 답변 보기"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btnAnswer"/>
