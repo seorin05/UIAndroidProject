@@ -1,8 +1,15 @@
 package com.example.myapplication.senior;
 
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.activity.EdgeToEdge;
@@ -11,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityQnaMainBinding;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,178 +28,369 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.security.cert.PolicyNode;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
-public class Qna_main extends AppCompatActivity {
+  public class Qna_main extends AppCompatActivity {
 
-    private static final String TAG = "Qna_main";
-    private ActivityQnaMainBinding binding;
+        private static final String TAG = "Qna_main";
+        private ActivityQnaMainBinding binding;
 
-    private DatabaseReference dbRef;
-    private Calendar currentDisplayDate;
+        private DatabaseReference dbRef;
+        private Calendar currentDisplayDate;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
+        private TextToSpeech textToSpeech;
+        private boolean isTtsReady = false;
+        private boolean isSpeaking = false;
 
-        binding = ActivityQnaMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        // ⭐ re 버튼에서 다시 읽을 안내 멘트
+        private String currentGuideScript = "";
+        // 음성 중단 관련
+        // private boolean isVoiceOn = true;
+        private AudioManager audioManager;
+        private Button volumeOnBtn;
+        private boolean isTtsEnabled = true; // 음성 ON/OFF 상태
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            EdgeToEdge.enable(this);
 
-        binding.listen.setOnClickListener(v -> {
-            Intent intent = new Intent(Qna_main.this, Qna_listen.class);
-            startActivity(intent);
-        });
+            binding = ActivityQnaMainBinding.inflate(getLayoutInflater());
+            setContentView(binding.getRoot());
 
-        // 1. Firebase 및 날짜 초기화
-        dbRef = FirebaseDatabase.getInstance().getReference();
-        currentDisplayDate = Calendar.getInstance();
+            dbRef = FirebaseDatabase.getInstance().getReference();
+            currentDisplayDate = Calendar.getInstance();
 
-        // 2. 초기 질문 로드 (오늘 날짜)
-        loadDailyQuestion(currentDisplayDate.getTime());
+            initializeTextToSpeech();
+            setupNavigationListeners();
 
-        // 3. 버튼 리스너 설정
-        setupNavigationListeners();
-
-        binding.tell.setOnClickListener(v -> {
-            Intent intent = new Intent(Qna_main.this, Qna_tell.class);
-
-            // 현재 표시 중인 날짜 전달
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            String dateStr = dateFormat.format(currentDisplayDate.getTime());
-            intent.putExtra("date", dateStr);
-
-            // ➕ 현재 화면에 보이는 질문도 전달
-            String questionText = binding.question.getText().toString();
-            intent.putExtra("questionText", questionText);
-
-            startActivity(intent);
-        });
-    }
-
-    // 날짜 및 문답 출력
-    private void setupNavigationListeners() {
-        binding.arrowLeft.setOnClickListener(v -> {
-            // 하루 전으로 이동 (제한 없음)
-            currentDisplayDate.add(Calendar.DAY_OF_YEAR, -1);
+            // ⭐ 최초 진입 → 무조건 출력
             loadDailyQuestion(currentDisplayDate.getTime());
-        });
 
-        binding.arrowRight.setOnClickListener(v -> {
-            // 오늘을 기준으로 비교
-            Calendar today = Calendar.getInstance();
-            today.set(Calendar.HOUR_OF_DAY, 0);
-            today.set(Calendar.MINUTE, 0);
-            today.set(Calendar.SECOND, 0);
-            today.set(Calendar.MILLISECOND, 0);
+            binding.re.setOnClickListener(v -> {
+                if (!currentGuideScript.isEmpty()) {
+                    speak(currentGuideScript, true);
+                }
+            });
 
-            // 현재 표시 날짜도 시간 초기화
-            Calendar currentDisplay = (Calendar) currentDisplayDate.clone();
-            currentDisplay.set(Calendar.HOUR_OF_DAY, 0);
-            currentDisplay.set(Calendar.MINUTE, 0);
-            currentDisplay.set(Calendar.SECOND, 0);
-            currentDisplay.set(Calendar.MILLISECOND, 0);
+            binding.tell.setOnClickListener(v -> {
+                stopTts();
+                Intent intent = new Intent(this, Qna_tell.class);
 
-            // 현재 날짜가 오늘보다 이전이면 → 오른쪽 이동 가능
-            if (currentDisplay.before(today)) {
-                currentDisplayDate.add(Calendar.DAY_OF_YEAR, 1);
+                String dateStr = new SimpleDateFormat(
+                        "yyyy-MM-dd", Locale.KOREA
+                ).format(currentDisplayDate.getTime());
+
+                intent.putExtra("date", dateStr);
+                intent.putExtra(
+                        "questionText",
+                        binding.question.getText().toString()
+                );
+
+                startActivity(intent);
+            });
+
+            binding.listen.setOnClickListener(v -> {
+                stopTts();
+                startActivity(
+                        new Intent(this, Qna_listen.class)
+                );
+            });
+
+            volumeOnBtn = findViewById(R.id.volumeOnBtn);
+
+            // AudioManager 가져오기
+            //audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+            // 처음 상태: 사용자가 설정한 음량 그대로 (ON)
+            //volumeOnBtn.setOnClickListener(v -> toggleVoice());
+
+            // 3. 초기 상태 (ON)
+            isTtsEnabled = true;
+            volumeOnBtn.setText("🔇 음성 중단하기");
+            volumeOnBtn.setGravity(Gravity.START);
+
+            // 4. 버튼 클릭 리스너
+            volumeOnBtn.setOnClickListener(v -> toggleTts());
+        }
+
+        // ================= 날짜 이동 =================
+        private void setupNavigationListeners() {
+            binding.arrowLeft.setOnClickListener(v -> {
+                currentDisplayDate.add(Calendar.DAY_OF_YEAR, -1);
                 loadDailyQuestion(currentDisplayDate.getTime());
-            } else {
-                // 이미 오늘이면 → 더 이상 진행 불가
-                Log.d(TAG, "이미 오늘입니다. 미래로 갈 수 없습니다.");
-            }
-        });
-    }
+            });
 
-    private void loadDailyQuestion(Date dateToLoad) {
+            binding.arrowRight.setOnClickListener(v -> {
+                Calendar today = Calendar.getInstance();
+                today.set(Calendar.HOUR_OF_DAY, 0);
+                today.set(Calendar.MINUTE, 0);
+                today.set(Calendar.SECOND, 0);
+                today.set(Calendar.MILLISECOND, 0);
 
-        // 날짜 포맷
-        SimpleDateFormat queryDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        String queryDate = queryDateFormat.format(dateToLoad);
+                Calendar display = (Calendar) currentDisplayDate.clone();
+                display.set(Calendar.HOUR_OF_DAY, 0);
+                display.set(Calendar.MINUTE, 0);
+                display.set(Calendar.SECOND, 0);
+                display.set(Calendar.MILLISECOND, 0);
 
-        SimpleDateFormat displayDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
-        String displayDate = displayDateFormat.format(dateToLoad);
+                if (display.before(today)) {
+                    currentDisplayDate.add(Calendar.DAY_OF_YEAR, 1);
+                    loadDailyQuestion(currentDisplayDate.getTime());
+                }
+            });
+        }
 
-        // 날짜 UI 업데이트
-        binding.mainText.setText("[ " + displayDate + " 문답 ]");
+        // ================= 질문 로드 =================
+        private void loadDailyQuestion(Date dateToLoad) {
 
-        // 버튼은 초기 상태는 모두 비활성화
-        binding.tell.setEnabled(false);
-        binding.listen.setEnabled(false);
+            String queryDate = new SimpleDateFormat(
+                    "yyyy-MM-dd", Locale.KOREA
+            ).format(dateToLoad);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            String displayDate = new SimpleDateFormat(
+                    "MM월 dd일", Locale.KOREA
+            ).format(dateToLoad);
 
-        // 질문 불러오기
-        dbRef.child("question")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+            binding.mainText.setText("[ " + displayDate + " 문답 ]");
 
-                        String foundQuestion = null;
+            binding.tell.setEnabled(false);
+            binding.listen.setEnabled(false);
 
-                        // question 아래에 있는 모든(q01, q02...) 반복 탐색
-                        for (DataSnapshot questionSnapshot : snapshot.getChildren()) {
+            String uid = FirebaseAuth.getInstance()
+                    .getCurrentUser().getUid();
 
-                            String date = questionSnapshot.child("date").getValue(String.class);
-                            String text = questionSnapshot.child("text").getValue(String.class);
+            dbRef.child("question")
+                    .addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(
+                                        @NonNull DataSnapshot snapshot) {
 
-                            // date 값이 내가 찾는 날짜와 동일하면 저장
-                            if (date != null && date.equals(queryDate)) {
-                                foundQuestion = text;
-                                break;
-                            }
+                                    String foundQuestion = null;
+
+                                    for (DataSnapshot q :
+                                            snapshot.getChildren()) {
+
+                                        String date =
+                                                q.child("date")
+                                                        .getValue(String.class);
+                                        String text =
+                                                q.child("text")
+                                                        .getValue(String.class);
+
+                                        if (queryDate.equals(date)) {
+                                            foundQuestion = text;
+                                            break;
+                                        }
+                                    }
+
+                                    if (foundQuestion != null) {
+                                        binding.question.setText(foundQuestion);
+
+                                        // ⭐ 안내 멘트 생성 + 저장
+                                        currentGuideScript =
+                                                makeGuideScript(
+                                                        dateToLoad,
+                                                        foundQuestion
+                                                );
+
+                                        // ⭐ 페이지 진입 / 날짜 변경 시 무조건 출력
+                                        speak(currentGuideScript, true);
+
+                                        loadAnswerStatus(uid, queryDate);
+                                    } else {
+                                        binding.question.setText(
+                                                "해당 날짜의 질문이 없습니다."
+                                        );
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(
+                                        @NonNull DatabaseError error) {
+                                    Log.e(TAG,
+                                            "질문 로드 실패",
+                                            error.toException());
+                                }
+                            });
+        }
+
+        // ================= 답변 여부 =================
+        private void loadAnswerStatus(String uid, String dateKey) {
+            dbRef.child("users")
+                    .child(uid)
+                    .child("answers")
+                    .child(dateKey)
+                    .addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(
+                                        @NonNull DataSnapshot snapshot) {
+
+                                    boolean hasAnswer =
+                                            snapshot.exists()
+                                                    && Boolean.TRUE.equals(
+                                                    snapshot.child("answered")
+                                                            .getValue(Boolean.class)
+                                            );
+
+                                    binding.tell.setEnabled(!hasAnswer);
+                                    binding.listen.setEnabled(hasAnswer);
+                                }
+
+                                @Override
+                                public void onCancelled(
+                                        @NonNull DatabaseError error) {
+                                    binding.tell.setEnabled(true);
+                                    binding.listen.setEnabled(false);
+                                }
+                            });
+        }
+
+        // ================= TTS 멘트 =================
+        private String makeGuideScript(
+                Date date, String questionText) {
+
+            String dateStr = new SimpleDateFormat(
+                    "M월 d일", Locale.KOREA
+            ).format(date);
+
+            return "문답 화면입니다. " + dateStr +
+                    " 질문입니다. " + questionText +
+                    " 답변을 남기시려면 답변하기 버튼을, " +
+                    "상대방의 답변을 들으려면 답변 보기 버튼을 눌러주세요. " +
+                    "안내를 다시 들으려면 안내 다시 듣기 버튼을 눌러주세요.";
+        }
+
+        // ================= TTS =================
+        private void initializeTextToSpeech() {
+            textToSpeech = new TextToSpeech(this, status -> {
+                if (status == TextToSpeech.SUCCESS) {
+
+                    int result = textToSpeech.setLanguage(Locale.KOREAN);
+                    isTtsReady = result != TextToSpeech.LANG_NOT_SUPPORTED
+                            && result != TextToSpeech.LANG_MISSING_DATA;
+
+                    if (isTtsReady) {
+                        textToSpeech.setSpeechRate(0.8f);
+
+                        textToSpeech.setOnUtteranceProgressListener(
+                                new UtteranceProgressListener() {
+                                    @Override
+                                    public void onStart(String utteranceId) {
+                                        isSpeaking = true;
+                                    }
+
+                                    @Override
+                                    public void onDone(String utteranceId) {
+                                        isSpeaking = false;
+                                    }
+
+                                    @Override
+                                    public void onError(String utteranceId) {
+                                        isSpeaking = false;
+                                    }
+                                }
+                        );
+
+                        // ⭐ TTS 준비 완료 후, 이미 멘트가 있으면 바로 읽기
+                        if (!currentGuideScript.isEmpty()) {
+                            speak(currentGuideScript, true);
                         }
-
-                        if (foundQuestion != null) {
-                            // 질문 화면에 표시
-                            binding.question.setText(foundQuestion);
-
-                            // 질문 찾은 뒤 → 답변 여부 조회
-                            loadAnswerStatus(uid, queryDate);
-
-                        } else {
-                            binding.question.setText("해당 날짜의 질문이 존재하지 않습니다.");
-                        }
                     }
+                }
+            });
+        }
 
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e(TAG, "질문 로드 실패", error.toException());
-                    }
-                });
+      private void speak(String text, boolean force) {
+          if (!isTtsReady || !isTtsEnabled) return;
+
+          if (force && isSpeaking) {
+              textToSpeech.stop();
+              isSpeaking = false;
+          }
+
+          if (!isSpeaking) {
+              textToSpeech.speak(
+                      text,
+                      TextToSpeech.QUEUE_FLUSH,
+                      null,
+                      "tts"
+              );
+              isSpeaking = true;
+          }
+      }
+
+      private void stopTts() {
+          if (textToSpeech != null && isSpeaking) {
+              textToSpeech.stop();
+              isSpeaking = false;
+          }
+      }
+
+      // ================= 음성 중단 및 재개 =================
+//      private void toggleVoice() {
+//
+//          if (isVoiceOn) {
+//              // 🔇 음성 OFF (0%)
+//              audioManager.setStreamVolume(
+//                      AudioManager.STREAM_MUSIC,
+//                      0,
+//                      0
+//              );
+//
+//              // 버튼 스타일 OFF로 변경
+//              //volumeOnBtn.setBackgroundResource(R.drawable.volume_off);
+//              volumeOnBtn.setText("🔈 음성 재생하기");
+//              volumeOnBtn.setGravity(Gravity.END);
+//
+//              isVoiceOn = false;
+//
+//          } else {
+//              // 🔊 음성 ON (80%)
+//              int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+//              int volume80 = (int) (maxVolume * 0.8);
+//
+//              audioManager.setStreamVolume(
+//                      AudioManager.STREAM_MUSIC,
+//                      volume80,
+//                      0
+//              );
+//
+//              // 버튼 스타일 ON으로 변경
+//              //volumeOnBtn.setBackgroundResource(R.drawable.volume_on);
+//              volumeOnBtn.setText("🔇 음성 중단하기");
+//              volumeOnBtn.setGravity(Gravity.START);
+//
+//              isVoiceOn = true;
+//          }
+//      }
+
+      private void toggleTts() {
+
+          if (isTtsEnabled) {
+              // 🔇 TTS 즉시 중단
+              if (textToSpeech != null) {
+                  textToSpeech.stop();
+              }
+
+              volumeOnBtn.setText("🔈 음성 재생하기");
+              volumeOnBtn.setGravity(Gravity.END);
+
+              isTtsEnabled = false;
+
+          } else {
+              // 🔊 다시 허용 (하지만 자동 재생은 안 함)
+              volumeOnBtn.setText("🔇 음성 중단하기");
+              volumeOnBtn.setGravity(Gravity.START);
+
+              isTtsEnabled = true;
+          }
+      }
     }
-
-    // 문답 여부에 따른 버튼 활성화
-    private void loadAnswerStatus(String uid, String dateKey) {
-        dbRef.child("users").child(uid).child("answers").child(dateKey)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                        boolean hasAnswer = snapshot.exists() &&
-                                snapshot.child("answered").getValue(Boolean.class) == Boolean.TRUE;
-
-                        // 답변 있으면 듣기 활성화, 없으면 답변하기 활성화
-                        binding.tell.setEnabled(!hasAnswer);
-                        binding.listen.setEnabled(hasAnswer);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        Log.e("Firebase", "답변 상태 조회 실패", error.toException());
-                        // 에러 시 답변하기 활성화
-                        binding.tell.setEnabled(true);
-                        binding.listen.setEnabled(false);
-                    }
-                });
-    }
-}

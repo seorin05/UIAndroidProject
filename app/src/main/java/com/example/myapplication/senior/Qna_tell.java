@@ -127,7 +127,7 @@ public class Qna_tell extends AppCompatActivity {
                         public void onError(String utteranceId) {
                             isSpeaking = false;
                             runOnUiThread(() -> {
-                                binding.statusText.setText("시작하기 버튼을 눌러주세요");
+                                binding.statusText.setText("시작하기를 눌러주세요");
                             });
                         }
                     });
