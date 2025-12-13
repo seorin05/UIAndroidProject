@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- 마이크 권한 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <!-- 인터넷 권한 (Google STT 사용 시) -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 인터넷 권한 (Google STT 사용 시) -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,6 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Project">
+        <activity
+            android:name=".guardian.G_alert"
+            android:exported="false" />
         <activity
             android:name=".start.StartPageActivity"
             android:exported="true">
@@ -37,7 +38,8 @@
         <activity
             android:name=".guardian.G_sche_add"
             android:exported="false" />
-        <activity android:name=".guardian.G_sche_main"
+        <activity
+            android:name=".guardian.G_sche_main"
             android:exported="false" />
         <activity
             android:name=".guardian.GuardianTodoAdd"
