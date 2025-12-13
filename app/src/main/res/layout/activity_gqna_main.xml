@@ -58,6 +58,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainText" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/question"
+        app:layout_constraintBottom_toBottomOf="@id/question"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5">
+
+        <ImageView
+            android:id="@+id/arrowLeft"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/arrowbtnleft"
+            tools:layout_editor_absoluteX="25dp"
+            tools:layout_editor_absoluteY="212dp" />
+
+        <ImageView
+            android:id="@+id/arrowRight"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="300dp"
+            android:scaleX="-1"
+            android:src="@drawable/arrowbtnleft"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="25dp"
+            tools:layout_editor_absoluteY="212dp" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btnAnswer"
         android:layout_width="0dp"

@@ -47,17 +47,6 @@ public class Qna_main extends AppCompatActivity {
             return insets;
         });
 
-        binding.tell.setOnClickListener(v -> {
-            Intent intent = new Intent(Qna_main.this, Qna_tell.class);
-
-            // 현재 표시 중인 날짜 전달
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-            String dateStr = dateFormat.format(currentDisplayDate.getTime());
-            intent.putExtra("date", dateStr);
-
-            startActivity(intent);
-        });
-
         binding.listen.setOnClickListener(v -> {
             Intent intent = new Intent(Qna_main.this, Qna_listen.class);
             startActivity(intent);
@@ -72,6 +61,21 @@ public class Qna_main extends AppCompatActivity {
 
         // 3. 버튼 리스너 설정
         setupNavigationListeners();
+
+        binding.tell.setOnClickListener(v -> {
+            Intent intent = new Intent(Qna_main.this, Qna_tell.class);
+
+            // 현재 표시 중인 날짜 전달
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            String dateStr = dateFormat.format(currentDisplayDate.getTime());
+            intent.putExtra("date", dateStr);
+
+            // ➕ 현재 화면에 보이는 질문도 전달
+            String questionText = binding.question.getText().toString();
+            intent.putExtra("questionText", questionText);
+
+            startActivity(intent);
+        });
     }
 
     // 날짜 및 문답 출력
@@ -190,6 +194,4 @@ public class Qna_main extends AppCompatActivity {
                     }
                 });
     }
-
-
 }
