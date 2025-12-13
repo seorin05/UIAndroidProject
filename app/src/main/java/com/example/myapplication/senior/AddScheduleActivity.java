@@ -85,7 +85,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         });
 
         // 취소 버튼
-        Button btnCancel = findViewById(R.id.BtnExit);
+        Button btnCancel = findViewById(R.id.BtnEmergency);
         btnCancel.setOnClickListener(v -> {
             Intent intent = new Intent(AddScheduleActivity.this, ScheduleMainActivity.class);
             startActivity(intent);
