@@ -67,6 +67,7 @@ public class Qna_listen extends AppCompatActivity {
 
         // 클릭 리스너 — 중요한 변경: Intent에 넘기는 날짜를 "현재 화면에서 보여주는 날짜"로 생성
         binding.my.setOnClickListener(v -> {
+            stopTts();
             String selectDate = formatDateForQuery(currentDisplayDate.getTime());
             Log.d(TAG, "보내는 queryDate (my): " + selectDate);
             Intent intent = new Intent(Qna_listen.this, Qna_listen_sen.class);
@@ -75,6 +76,7 @@ public class Qna_listen extends AppCompatActivity {
         });
 
         binding.your.setOnClickListener(v -> {
+            stopTts();
             String selectDate = formatDateForQuery(currentDisplayDate.getTime());
             Log.d(TAG, "보내는 queryDate (your): " + selectDate);
             Intent intent = new Intent(Qna_listen.this, Qna_listen_gua.class);
@@ -236,8 +238,6 @@ public class Qna_listen extends AppCompatActivity {
                         binding.question.setText("질문 로드 중 오류가 발생했습니다.");
                     }
                 });
-        currentGuideScript = makeGuideScript(dateToLoad, foundQuestion);
-        speak(currentGuideScript, true);
     }
 
     // ================= TTS 멘트 =================
