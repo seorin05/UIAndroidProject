@@ -8,7 +8,7 @@
     tools:context="com.example.myapplication.senior.Qna_main">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/VoulumOnBtn"
+        android:id="@+id/volumeOnBtn"
         style="@style/VolumeOnButton"
         android:layout_height="wrap_content"
         android:layout_width="0dp"

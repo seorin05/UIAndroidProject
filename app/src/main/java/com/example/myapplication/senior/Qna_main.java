@@ -35,6 +35,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import com.example.myapplication.senior.TtsStateManager;
+
   public class Qna_main extends AppCompatActivity {
 
         private static final String TAG = "Qna_main";
@@ -50,8 +52,6 @@ import java.util.Locale;
         // ⭐ re 버튼에서 다시 읽을 안내 멘트
         private String currentGuideScript = "";
         // 음성 중단 관련
-        // private boolean isVoiceOn = true;
-        private AudioManager audioManager;
         private Button volumeOnBtn;
         private boolean isTtsEnabled = true; // 음성 ON/OFF 상태
 
@@ -104,12 +104,6 @@ import java.util.Locale;
 
             volumeOnBtn = findViewById(R.id.volumeOnBtn);
 
-            // AudioManager 가져오기
-            //audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-            // 처음 상태: 사용자가 설정한 음량 그대로 (ON)
-            //volumeOnBtn.setOnClickListener(v -> toggleVoice());
-
             // 3. 초기 상태 (ON)
             isTtsEnabled = true;
             volumeOnBtn.setText("🔇 음성 중단하기");
@@ -117,6 +111,9 @@ import java.util.Locale;
 
             // 4. 버튼 클릭 리스너
             volumeOnBtn.setOnClickListener(v -> toggleTts());
+
+            isTtsEnabled = TtsStateManager.isTtsEnabled(this);
+            updateVolumeButtonUi();
         }
 
         // ================= 날짜 이동 =================
@@ -264,7 +261,7 @@ import java.util.Locale;
             return "문답 화면입니다. " + dateStr +
                     " 질문입니다. " + questionText +
                     " 답변을 남기시려면 답변하기 버튼을, " +
-                    "상대방의 답변을 들으려면 답변 보기 버튼을 눌러주세요. " +
+                    " 답변을 들으려면 답변 보기 버튼을 눌러주세요. " +
                     "안내를 다시 들으려면 안내 다시 듣기 버튼을 눌러주세요.";
         }
 
@@ -309,22 +306,21 @@ import java.util.Locale;
         }
 
       private void speak(String text, boolean force) {
-          if (!isTtsReady || !isTtsEnabled) return;
+
+          if (!isTtsReady || !TtsStateManager.isTtsEnabled(this)) return;
 
           if (force && isSpeaking) {
               textToSpeech.stop();
               isSpeaking = false;
           }
 
-          if (!isSpeaking) {
-              textToSpeech.speak(
-                      text,
-                      TextToSpeech.QUEUE_FLUSH,
-                      null,
-                      "tts"
-              );
-              isSpeaking = true;
-          }
+          textToSpeech.speak(
+                  text,
+                  TextToSpeech.QUEUE_FLUSH,
+                  null,
+                  "tts"
+          );
+          isSpeaking = true;
       }
 
       private void stopTts() {
@@ -334,63 +330,32 @@ import java.util.Locale;
           }
       }
 
-      // ================= 음성 중단 및 재개 =================
-//      private void toggleVoice() {
-//
-//          if (isVoiceOn) {
-//              // 🔇 음성 OFF (0%)
-//              audioManager.setStreamVolume(
-//                      AudioManager.STREAM_MUSIC,
-//                      0,
-//                      0
-//              );
-//
-//              // 버튼 스타일 OFF로 변경
-//              //volumeOnBtn.setBackgroundResource(R.drawable.volume_off);
-//              volumeOnBtn.setText("🔈 음성 재생하기");
-//              volumeOnBtn.setGravity(Gravity.END);
-//
-//              isVoiceOn = false;
-//
-//          } else {
-//              // 🔊 음성 ON (80%)
-//              int maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-//              int volume80 = (int) (maxVolume * 0.8);
-//
-//              audioManager.setStreamVolume(
-//                      AudioManager.STREAM_MUSIC,
-//                      volume80,
-//                      0
-//              );
-//
-//              // 버튼 스타일 ON으로 변경
-//              //volumeOnBtn.setBackgroundResource(R.drawable.volume_on);
-//              volumeOnBtn.setText("🔇 음성 중단하기");
-//              volumeOnBtn.setGravity(Gravity.START);
-//
-//              isVoiceOn = true;
-//          }
-//      }
+      private void updateVolumeButtonUi() {
 
-      private void toggleTts() {
+          if (volumeOnBtn == null) return;
 
           if (isTtsEnabled) {
-              // 🔇 TTS 즉시 중단
-              if (textToSpeech != null) {
-                  textToSpeech.stop();
-              }
-
-              volumeOnBtn.setText("🔈 음성 재생하기");
-              volumeOnBtn.setGravity(Gravity.END);
-
-              isTtsEnabled = false;
-
-          } else {
-              // 🔊 다시 허용 (하지만 자동 재생은 안 함)
+              // 🔇 음성 ON 상태 → 중단 가능
               volumeOnBtn.setText("🔇 음성 중단하기");
               volumeOnBtn.setGravity(Gravity.START);
-
-              isTtsEnabled = true;
+          } else {
+              // 🔈 음성 OFF 상태 → 다시 재생 가능
+              volumeOnBtn.setText("🔈 음성 재생하기");
+              volumeOnBtn.setGravity(Gravity.END);
           }
+      }
+      private void toggleTts() {
+
+          isTtsEnabled = !isTtsEnabled;
+
+          // ⭐ 앱 전체 상태 저장
+          TtsStateManager.setTtsEnabled(this, isTtsEnabled);
+
+          if (!isTtsEnabled && textToSpeech != null) {
+              textToSpeech.stop();
+              isSpeaking = false;
+          }
+
+          updateVolumeButtonUi();
       }
     }
