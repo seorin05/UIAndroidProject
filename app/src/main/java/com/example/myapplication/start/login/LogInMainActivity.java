@@ -21,6 +21,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import android.content.Intent;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import android.util.Log;
+
 public class LogInMainActivity extends AppCompatActivity {
 
     private FirebaseAuth auth;
@@ -98,39 +101,77 @@ public class LogInMainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = auth.getCurrentUser();
-                        if (user != null) {
-                            db.child("users").child(user.getUid())
-                                    .get()
-                                    .addOnSuccessListener(snapshot -> {
-                                        if (snapshot.exists()) {
-                                            String savedRole = snapshot.child("role").getValue(String.class);
-                                            String savedCode = snapshot.child("connectionCode").getValue(String.class);
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if (user != null) {
 
-                                            if (role.equals("어르신")) {
-                                                // 어르신은 연결번호 확인 없이 로그인
-                                                Toast.makeText(this, "로그인 성공! 역할: 어르신", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(LogInMainActivity.this, com.example.myapplication.senior.Qna_main.class);
-                                                startActivity(intent);
-                                                finish(); // 로그인 페이지 종료
-                                            } else if (role.equals("보호자")) {
-                                                // 보호자는 연결번호 확인 필요
-                                                if (savedCode != null && savedCode.equals(connectionCode)) {
-                                                    Toast.makeText(this, "로그인 성공! 역할: 보호자", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(LogInMainActivity.this, com.example.myapplication.guardian.G_qna_main.class);
+                                String uid = user.getUid();
+
+                                // ================= FCM 토큰 저장 =================
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnSuccessListener(token -> {
+                                            db.child("users")
+                                                    .child(uid)
+                                                    .child("fcmToken")
+                                                    .setValue(token);
+
+                                            Log.d("FCM", "FCM 토큰 저장 완료: " + token);
+                                        });
+
+                                // ================= 기존 로직 =================
+                                db.child("users").child(uid)
+                                        .get()
+                                        .addOnSuccessListener(snapshot -> {
+                                            if (snapshot.exists()) {
+
+                                                String savedRole =
+                                                        snapshot.child("role").getValue(String.class);
+                                                String savedCode =
+                                                        snapshot.child("connectionCode").getValue(String.class);
+
+                                                if (role.equals("어르신")) {
+
+                                                    Toast.makeText(this,
+                                                            "로그인 성공! 역할: 어르신",
+                                                            Toast.LENGTH_SHORT).show();
+
+                                                    Intent intent = new Intent(
+                                                            LogInMainActivity.this,
+                                                            com.example.myapplication.senior.Qna_main.class
+                                                    );
                                                     startActivity(intent);
                                                     finish();
-                                                } else {
-                                                    Toast.makeText(this, "연결번호가 올바르지 않습니다", Toast.LENGTH_SHORT).show();
-                                                    auth.signOut();
+
+                                                } else if (role.equals("보호자")) {
+
+                                                    if (savedCode != null && savedCode.equals(connectionCode)) {
+
+                                                        Toast.makeText(this,
+                                                                "로그인 성공! 역할: 보호자",
+                                                                Toast.LENGTH_SHORT).show();
+
+                                                        Intent intent = new Intent(
+                                                                LogInMainActivity.this,
+                                                                com.example.myapplication.guardian.G_qna_main.class
+                                                        );
+                                                        startActivity(intent);
+                                                        finish();
+
+                                                    } else {
+                                                        Toast.makeText(this,
+                                                                "연결번호가 올바르지 않습니다",
+                                                                Toast.LENGTH_SHORT).show();
+                                                        auth.signOut();
+                                                    }
                                                 }
+
+                                            } else {
+                                                Toast.makeText(this,
+                                                        "사용자 정보가 없습니다",
+                                                        Toast.LENGTH_SHORT).show();
                                             }
-                                        } else {
-                                            Toast.makeText(this, "사용자 정보가 없습니다", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Toast.makeText(this, "사용자 정보 불러오기 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    });
+                                        });
+                            }
                         }
                     } else {
                         String errorMessage = task.getException() != null
