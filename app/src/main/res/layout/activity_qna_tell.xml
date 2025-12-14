@@ -8,7 +8,7 @@
     tools:context="com.example.myapplication.senior.Qna_main">
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/VoulumOnBtn"
+        android:id="@+id/volumeOnBtn"
         style="@style/VolumeOnButton"
         android:layout_height="wrap_content"
         android:layout_width="0dp"
@@ -20,14 +20,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/mainText"
+        android:id="@+id/statusText"
         style="@style/BoldText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="109dp"
 
-        android:text="답변을 듣고 있어요 👂"
-        android:textSize="36dp"
+        android:text="준비되면 시작해주세요!"
+        android:textSize="32dp"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +48,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mainText" />
+        app:layout_constraintTop_toBottomOf="@+id/statusText"
 
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"/>
 
     <LinearLayout
         android:id="@+id/btn1"
@@ -61,23 +63,23 @@
 
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/save"
+            android:id="@+id/btnVoiceInput"
             style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
 
-            android:text="저장\n하기" />
+            android:text="시작\n하기" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/calcel"
+            android:id="@+id/btnSave"
             style="@style/QnaStateButton"
             android:layout_width="160dp"
             android:layout_height="160dp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
 
-            android:text="취소\n하기" />
+            android:text="저장\n하기" />
     </LinearLayout>
 
     <LinearLayout

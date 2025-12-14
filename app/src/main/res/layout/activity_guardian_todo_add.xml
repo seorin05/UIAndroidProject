@@ -20,6 +20,7 @@
             android:background="#FFD5A2" />
 
         <ImageView
+            android:id="@+id/received_alarm"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
@@ -63,6 +64,7 @@
                 android:orientation="vertical">
 
                 <FrameLayout
+                    android:id="@+id/goto_calendar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
@@ -226,7 +228,7 @@
         android:layout_marginEnd="24dp"
         android:clickable="true"
         android:focusable="true"
-        android:hint="시간을 선택해주세요."
+        android:text="시간을 선택해주세요."
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -242,7 +244,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:enabled="true"
+        android:enabled="false"
         android:text="할 일 추가하기"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

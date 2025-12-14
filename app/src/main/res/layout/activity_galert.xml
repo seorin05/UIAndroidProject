@@ -5,9 +5,11 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".guardian.GuardianTodoMain">
+    tools:context=".guardian.G_alert">
 
+    <!-- 헤더 -->
     <FrameLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         app:layout_constraintTop_toTopOf="parent" >
@@ -19,7 +21,6 @@
             android:background="#FFD5A2" />
 
         <ImageView
-            android:id="@+id/received_alarm"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="end"
@@ -27,18 +28,74 @@
             android:layout_marginTop="50dp"
             android:src="@drawable/ic_mail" />
     </FrameLayout>
-    <!-- 푸터 할일선택-->
+
+    <!-- 오늘 알림 -->
+    <LinearLayout
+        android:id="@+id/todayAlert"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="오늘 알림"
+            android:textStyle="bold"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[할 일 내용]을 완료하였습니다. [완료 시간]" />
+
+    </LinearLayout>
+
+    <!-- 지난 알림 -->
+    <LinearLayout
+        android:id="@+id/yesterdayAlert"
+
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toBottomOf="@id/todayAlert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="지난 알림"
+            android:textStyle="bold"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="[할 일 내용]을 완료하였습니다. [완료 시간]" />
+
+    </LinearLayout>
+
+    <!-- 푸터 할 일 선택-->
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="130dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- 검정 배경 -->
         <View
             android:id="@+id/footer_background"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="100dp"
             android:layout_gravity="bottom"
             android:background="#2C2C2C" />
 
@@ -164,51 +221,5 @@
 
         </LinearLayout>
     </FrameLayout>
-
-    <!-- 여기까지가 헤더 푸터 -->
-
-    <TextView
-        android:id="@+id/tv_title"
-        style="@style/BoldText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="160dp"
-        android:text="삭제할 할 일을 선택해주세요!"
-        android:textSize="25dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_todo_list"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete_todo"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
-        app:layout_constraintVertical_bias="1.0"
-        tools:listitem="@layout/list_item_todo_delete" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_delete_todo"
-        style="@style/BtnD"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:enabled="false"
-        android:text="할 일 삭제하기"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
