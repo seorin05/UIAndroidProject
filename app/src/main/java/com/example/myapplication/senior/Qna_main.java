@@ -117,6 +117,7 @@ import com.example.myapplication.senior.TtsStateManager;
             updateVolumeButtonUi();
 
             binding.end.setOnClickListener(v->{
+                stopTts();
                 Intent intent = new Intent(Qna_main.this, SeniorMain.class);
                 startActivity(intent);
             });
