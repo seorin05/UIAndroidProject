@@ -118,6 +118,7 @@ import com.example.myapplication.senior.TtsStateManager;
 
             binding.end.setOnClickListener(v->{
                 Intent intent = new Intent(Qna_main.this, SeniorMain.class);
+                startActivity(intent);
             });
         }
 

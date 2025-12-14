@@ -29,20 +29,20 @@
             android:src="@drawable/ic_mail" />
     </FrameLayout>
 
+    <!--text field-->
     <TextView
         android:id="@+id/mainText"
+        style="@style/BoldText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/header"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintEnd_toEndOf="@id/header"
-        android:layout_marginTop="100dp"
-
-        style="@style/BoldText"
+        android:layout_marginTop="36dp"
         android:text="추가할 일정을 알려주세요!"
-        android:textSize="26sp" />
+        android:textSize="26sp"
 
-    <!--text field-->
+        app:layout_constraintEnd_toEndOf="@id/header"
+        app:layout_constraintStart_toStartOf="@id/header"
+        app:layout_constraintTop_toBottomOf="@id/header" />
+
     <LinearLayout
         android:id="@+id/todoName"
         android:layout_width="match_parent"

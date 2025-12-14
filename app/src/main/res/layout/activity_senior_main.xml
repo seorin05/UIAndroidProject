@@ -95,14 +95,14 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_listen_again"
         style="@style/QnaStateButton"
-        android:layout_width="396dp"
+        android:layout_width="350dp"
         android:layout_height="169dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="18dp"
         android:layout_marginEnd="24dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:text="안내 다시 듣기"
+        android:text="안내 다시듣기"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

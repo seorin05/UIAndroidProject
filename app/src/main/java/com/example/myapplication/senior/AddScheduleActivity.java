@@ -63,7 +63,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         // 뷰 초기화
         btnSchedule = findViewById(R.id.BtnSchedule);
         textView = findViewById(R.id.textView);
-        btnStop = findViewById(R.id.btnStop);
+        btnStop = findViewById(R.id.BtnTodo);
 
         // TTS 초기화
         initializeTextToSpeech();
@@ -85,7 +85,7 @@ public class AddScheduleActivity extends AppCompatActivity {
         });
 
         // 취소 버튼
-        Button btnCancel = findViewById(R.id.BtnExit);
+        Button btnCancel = findViewById(R.id.BtnEmergency);
         btnCancel.setOnClickListener(v -> {
             Intent intent = new Intent(AddScheduleActivity.this, ScheduleMainActivity.class);
             startActivity(intent);

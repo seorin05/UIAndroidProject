@@ -20,7 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -44,6 +46,8 @@ public class Qna_tell extends AppCompatActivity {
     private TextView questionText;
 
     private String recognizedText = "";
+    private String dateKey; // 날짜 키 저장
+    private String questionFromMain; // 질문 텍스트 저장
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -59,11 +63,24 @@ public class Qna_tell extends AppCompatActivity {
         statusText = findViewById(R.id.statusText);
         questionText = findViewById(R.id.question);
 
-// questionTextView에 Main에서 전달된 질문 띄우기
-        String questionFromMain = getIntent().getStringExtra("questionText");
-        if (questionFromMain != null) {
-            questionText.setText(questionFromMain);
+        // Intent로부터 날짜와 질문 받기
+        dateKey = getIntent().getStringExtra("date");
+        questionFromMain = getIntent().getStringExtra("questionText");
+
+        // 날짜가 없으면 오늘 날짜 사용
+        if (dateKey == null || dateKey.isEmpty()) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            dateKey = sdf.format(new Date());
+            Log.w(TAG, "날짜 정보가 없어 오늘 날짜 사용: " + dateKey);
         }
+
+        // questionTextView에 Main에서 전달된 질문 띄우기
+        if (questionFromMain != null && !questionFromMain.isEmpty()) {
+            questionText.setText(questionFromMain);
+        } else {
+            questionText.setText("질문 정보가 없습니다.");
+        }
+
         // 초기 상태 UI
         isTtsEnabled = true;
         updateVolumeButtonUi();
@@ -188,7 +205,7 @@ public class Qna_tell extends AppCompatActivity {
             ArrayList<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             if (results != null && !results.isEmpty()) {
                 recognizedText = results.get(0);
-                statusText.setText("인식 완료!");
+                statusText.setText("인식 완료: " + recognizedText);
 
                 // Firebase 저장
                 saveAnswerToFirebase(recognizedText);
@@ -207,23 +224,31 @@ public class Qna_tell extends AppCompatActivity {
 
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+        // 답변 데이터 생성
         Map<String, Object> answerData = new HashMap<>();
         answerData.put("answerText", text.trim());
         answerData.put("answered", true);
         answerData.put("timestamp", System.currentTimeMillis());
 
+        // Firebase 구조: users/{uid}/answers/{dateKey}
         dbRef.child("users")
                 .child(uid)
                 .child("answers")
-                .child("answerText")
+                .child(dateKey) // 날짜 키 추가!
                 .setValue(answerData)
                 .addOnSuccessListener(v -> {
+                    Log.d(TAG, "답변 저장 성공: " + dateKey);
                     speak("답변이 저장되었습니다.", true);
-                    new Handler().postDelayed(this::finish, 2000);
+
+                    // 2초 후 액티비티 종료
+                    new Handler().postDelayed(() -> {
+                        finish();
+                    }, 2000);
                 })
                 .addOnFailureListener(e -> {
                     speak("답변 저장에 실패했습니다.", true);
                     Log.e(TAG, "Firebase 저장 실패: " + e.getMessage());
+                    Toast.makeText(this, "저장 실패: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
     }
 
