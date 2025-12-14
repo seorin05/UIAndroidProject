@@ -1,5 +1,6 @@
 package com.example.myapplication.guardian;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -67,6 +68,20 @@ public class G_qna_answer extends AppCompatActivity {
 
         // 저장 버튼
         binding.btnAnswer.setOnClickListener(v -> saveAnswer());
+
+        binding.navCalendar.setOnClickListener(v-> {
+            Intent intent = new Intent(G_qna_answer.this, G_sche_main.class);
+            startActivity(intent);
+        });
+
+        binding.navTodo.setOnClickListener(v-> {
+            Intent intent = new Intent(G_qna_answer.this, GuardianTodoMain.class);
+            startActivity(intent);
+        });
+
+        binding.message.setOnClickListener(v -> {
+            startActivity(new Intent(this, G_alert.class));
+        });
     }
 
     /**

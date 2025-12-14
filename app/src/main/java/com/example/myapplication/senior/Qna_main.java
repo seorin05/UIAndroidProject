@@ -115,6 +115,10 @@ import com.example.myapplication.senior.TtsStateManager;
             isTtsEnabled = true;
             TtsStateManager.setTtsEnabled(this, true);
             updateVolumeButtonUi();
+
+            binding.end.setOnClickListener(v->{
+                Intent intent = new Intent(Qna_main.this, SeniorMain.class);
+            });
         }
 
         // ================= 날짜 이동 =================

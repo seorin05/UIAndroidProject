@@ -70,10 +70,6 @@ public class G_qna_main extends AppCompatActivity {
             startActivity(intent);
         });
 
-        binding.message.setOnClickListener(v -> {
-            startActivity(new Intent(this, G_alert.class));
-        });
-
         // ================= 초기화 =================
 
         dbRef = FirebaseDatabase.getInstance().getReference();
@@ -81,6 +77,21 @@ public class G_qna_main extends AppCompatActivity {
 
         loadDailyQuestion(currentDisplayDate.getTime());
         setupNavigationListeners();
+
+        binding.navCalendar.setOnClickListener(v-> {
+            Intent intent = new Intent(G_qna_main.this, G_sche_main.class);
+            startActivity(intent);
+        });
+
+        binding.navTodo.setOnClickListener(v-> {
+            Intent intent = new Intent(G_qna_main.this, GuardianTodoMain.class);
+            startActivity(intent);
+        });
+
+        binding.message.setOnClickListener(v -> {
+            startActivity(new Intent(this, G_alert.class));
+        });
+
     }
 
     // ================= 날짜 이동 =================

@@ -1,5 +1,6 @@
 package com.example.myapplication.guardian;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -50,6 +51,20 @@ public class G_qna_listen extends AppCompatActivity {
 
         // ================= 어르신 연결 → 데이터 로드 =================
         loadConnectedElderly();
+
+        binding.navCalendar.setOnClickListener(v-> {
+            Intent intent = new Intent(G_qna_listen.this, G_sche_main.class);
+            startActivity(intent);
+        });
+
+        binding.navTodo.setOnClickListener(v-> {
+            Intent intent = new Intent(G_qna_listen.this, GuardianTodoMain.class);
+            startActivity(intent);
+        });
+
+        binding.message.setOnClickListener(v -> {
+            startActivity(new Intent(this, G_alert.class));
+        });
     }
 
     // ======================================================
