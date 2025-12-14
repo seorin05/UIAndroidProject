@@ -241,10 +241,10 @@ public class SeniorTodo extends AppCompatActivity {
         String taskContent = "오늘의 할 일은 " + currentItem.content + "입니다. " +
                 "시간은 " + currentItem.time + "입니다. ";
 
-        String guideContent = "완료하셨으면 1번 완료 버튼을, " +
-                "아직 못하셨으면 2번 미완료 버튼을 눌러주세요. " +
-                "설명을 다시 들으시려면 3번, " +
-                "나가시려면 4번 종료하기를 눌러주세요.";
+        String guideContent = "완료하셨으면 완료 버튼을, " +
+                "아직 못하셨으면 미완료 버튼을 눌러주세요. " +
+                "설명을 다시 들으시려면 다시 듣기를, " +
+                "나가시려면 종료하기를 눌러주세요.";
 
         tts.speak(taskContent + guideContent, TextToSpeech.QUEUE_FLUSH, null, "TodoGuide");
     }
